@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lutong Lokal bowl logo">
+  <title>Lutong Lokal</title>
+  <circle cx="32" cy="32" r="32" fill="#FFF4EC"/>
+  <path d="M10 34h44c0 11-9.8 20-22 20S10 45 10 34z" fill="#9C3A12"/>
+  <rect x="8" y="29" width="48" height="6" rx="3" fill="#7A2E0E"/>
+  <path d="M25 22c0-3 4-3 4-6M32 20c0-4 5-4 5-8M39 23c0-2.5 3.5-2.5 3.5-5" stroke="#B84A17" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+  <circle cx="32" cy="44" r="6" fill="#FFD9C2"/>
+</svg>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register (demo) — Lutong Lokal</title>
+  <meta name="description" content="Create a demo customer account for the Lutong Lokal prototype. Registration never grants administrator access.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
+        <span class="brand-text">
+          <strong>Lutong Lokal</strong>
+          <small>Good food, less waiting.</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-label visually-hidden">Open main menu</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="cart.html" class="nav-cart">
+              Cart <span class="cart-badge" data-cart-count>0</span>
+            </a>
+          </li>
+          <li>
+            <a href="login.html" class="nav-account" data-account-link data-nav-pages="login.html register.html dashboard.html admin.html">Sign in</a>
+          </li>
+          <li>
+            <button class="btn btn-ghost btn-sm" type="button" data-sign-out hidden>Sign out</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li aria-current="page">Register</li>
+          </ol>
+        </nav>
+        <h1>Create a demo customer account</h1>
+        <p>
+          Registering gives you a customer account so you can keep your demo
+          orders together in one place.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split-layout">
+        <div>
+          <div class="alert alert-warning">
+            <p>
+              <strong>Demo registration is not a secure sign-up.</strong>
+              The account is created inside your browser and is visible to anybody
+              who uses the same browser profile. Do not enter real personal
+              information, and never use a password you use elsewhere.
+            </p>
+          </div>
+
+          <h2>What this prototype stores</h2>
+          <p class="text-muted">
+            Only what is needed to show the feature working:
+          </p>
+          <dl class="info-rows">
+            <div class="info-row">
+              <dt>Your name</dt>
+              <dd>Shown on your dashboard and on your demo orders.</dd>
+            </div>
+            <div class="info-row">
+              <dt>Username</dt>
+              <dd>Used to sign in to the demo site.</dd>
+            </div>
+            <div class="info-row">
+              <dt>Email address</dt>
+              <dd>Used to sign in to the demo site. Please use an address you control.</dd>
+            </div>
+          </dl>
+
+          <div class="alert alert-info">
+            <p>
+              <strong>No passwords are collected.</strong>
+              The demo sign-in uses a public demo passcode instead of a password,
+              so there is nothing sensitive to store. A real version of this site
+              would need a trusted backend or an authentication provider with
+              server-side access rules, hashed passwords and secure sessions.
+            </p>
+          </div>
+
+          <h3>Already have the demo customer account?</h3>
+          <p class="text-muted">
+            Use <span class="mono">demo</span> /
+            <span class="mono">demo@lutonglokal.test</span> with the passcode
+            <span class="mono">demo123</span>.
+          </p>
+          <div class="button-row" style="margin-bottom: 0;">
+            <a class="btn btn-primary" href="login.html">Go to sign in</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-card">
+            <h2>Register</h2>
+            <p class="text-muted">All fields are required.</p>
+
+            <div class="alert alert-success" id="register-status" role="status" aria-live="polite" hidden></div>
+
+            <form id="register-form" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="register-name">Full name <span class="required" aria-hidden="true">*</span></label>
+                  <input
+                    type="text" id="register-name" name="displayName"
+                    autocomplete="name" maxlength="60" required
+                    aria-describedby="register-name-error">
+                  <p class="field-error" id="register-name-error" hidden></p>
+                </div>
+
+                <div class="field">
+                  <label for="register-username">Username <span class="required" aria-hidden="true">*</span></label>
+                  <input
+                    type="text" id="register-username" name="username"
+                    autocomplete="username" maxlength="30" required
+                    aria-describedby="register-username-hint register-username-error">
+                  <p class="field-hint" id="register-username-hint">
+                    3 to 30 characters. Letters, numbers, dots, underscores and hyphens.
+                  </p>
+                  <p class="field-error" id="register-username-error" hidden></p>
+                </div>
+
+                <div class="field">
+                  <label for="register-email">Email address <span class="required" aria-hidden="true">*</span></label>
+                  <input
+                    type="email" id="register-email" name="email"
+                    autocomplete="email" maxlength="120" required
+                    aria-describedby="register-email-error">
+                  <p class="field-error" id="register-email-error" hidden></p>
+                </div>
+
+                <div class="button-row">
+                  <button class="btn btn-primary" type="submit">Create demo account</button>
+                  <a class="btn btn-outline" href="login.html">I already have one</a>
+                </div>
+
+                <p class="field-hint mb-0">
+                  New accounts are always created as customer accounts. There is no
+                  option to register as an administrator.
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h2>Lutong Lokal</h2>
+        <p>Good food, less waiting.</p>
+        <p>
+          A web development prototype built for the IT105 course.
+          Every meal, price, order and account on this site is demonstration data.
+        </p>
+      </div>
+
+      <div>
+        <h3>Pages</h3>
+        <ul class="footer-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Your account</h3>
+        <ul class="footer-list">
+          <li><a href="login.html">Sign in (demo)</a></li>
+          <li><a href="register.html">Register (demo)</a></li>
+          <li><a href="dashboard.html">User dashboard</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Staff</h3>
+        <ul class="footer-list">
+          <li><a href="admin.html">Admin demo area</a></li>
+        </ul>
+        <p style="margin-top: 1rem;">
+          <span class="badge badge-soldout">Demo area</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>
+        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
+        are stored only in this browser. Photos are from Wikimedia Commons under
+        Creative Commons licences — full credits are in the README.
+      </p>
+      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/validate.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/register.js"></script>
+</body>
+</html>

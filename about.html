@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Lutong Lokal</title>
+  <meta name="description" content="About Lutong Lokal, the IT105 classroom prototype of a Filipino carinderia ordering website.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
+        <span class="brand-text">
+          <strong>Lutong Lokal</strong>
+          <small>Good food, less waiting.</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-label visually-hidden">Open main menu</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="cart.html" class="nav-cart">
+              Cart <span class="cart-badge" data-cart-count>0</span>
+            </a>
+          </li>
+          <li>
+            <a href="login.html" class="nav-account" data-account-link data-nav-pages="login.html register.html dashboard.html admin.html">Sign in</a>
+          </li>
+          <li>
+            <button class="btn btn-ghost btn-sm" type="button" data-sign-out hidden>Sign out</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li aria-current="page">About</li>
+          </ol>
+        </nav>
+        <h1>About Lutong Lokal</h1>
+        <p>
+          A small carinderia built on a simple idea: cook the food when somebody
+          orders it, and get it into their hands fast.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split-layout">
+        <div class="media-block">
+          <img
+            src="https://commons.wikimedia.org/wiki/Special:FilePath/Jeepney%20and%20Tricycle%20Tagum.jpg?width=640"
+            alt="A jeepney and a tricycle on a busy street in the Philippines"
+            width="640" height="640" loading="lazy" decoding="async"
+            data-fallback-text="Jeepney and tricycle on a Filipino street">
+          <div class="card-fallback" hidden>
+            <span data-fallback-label>Jeepney and tricycle on a Filipino street</span>
+          </div>
+        </div>
+
+        <div>
+          <h2>Our story</h2>
+          <p>
+            Lutong Lokal is the kind of neighbourhood carinderia where the owner
+            cooks the ulam in the morning, the pot of sinigang keeps going all
+            day, and the person serving you is also the person who prepared it.
+          </p>
+          <p>
+            We built this website so that people could order ahead instead of
+            queueing. You look at the menu, pick your ulam, tell us when you will
+            collect, and skip the line at the counter.
+          </p>
+          <p>
+            The tagline — <em>good food, less waiting</em> — is the whole point.
+            Nothing here is frozen. Nothing sits under a lamp. The kitchen starts
+            cooking the moment your order lands.
+          </p>
+
+          <div class="demo-note">
+            <span aria-hidden="true">&#9432;</span>
+            <p>
+              <strong>Prototype note.</strong> This website is a classroom project
+              for IT105 Web Development. The stall described here is fictional and
+              the dishes, prices and customers are demonstration data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tint" aria-labelledby="values-heading">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="values-heading">What we stand for</h2>
+          <p>Three habits that decide how every order is handled.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-body">
+              <span class="feature-icon" aria-hidden="true">&#128293;</span>
+              <h3 class="card-title">Fresh, not reheated</h3>
+              <p class="card-text">
+                Ulam is cooked in batches through the day. If a dish runs out,
+                it is marked sold out on the menu straight away instead of
+                being faked up from the freezer.
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-body">
+              <span class="feature-icon" aria-hidden="true">&#128100;</span>
+              <h3 class="card-title">Order ahead, skip the line</h3>
+              <p class="card-text">
+                Place your pickup order online and the kitchen starts on it.
+                Your name goes on the board so the counter knows you are there.
+              </p>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-body">
+              <span class="feature-icon" aria-hidden="true">&#128176;</span>
+              <h3 class="card-title">Honest, simple prices</h3>
+              <p class="card-text">
+                One price per dish, shown clearly with the meal description.
+                No service charge surprises when you collect your order.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="kitchen-heading">
+      <div class="container split-layout split-layout-wide">
+        <div>
+          <h2 id="kitchen-heading">Kitchen hours</h2>
+          <p class="text-muted">
+            The demo order form accepts pickup slots inside these hours.
+            Times below are sample hours for the prototype.
+          </p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <caption>Opening hours (demo data)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Day</th>
+                  <th scope="col">Kitchen opens</th>
+                  <th scope="col">Last pickup</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Monday</th><td>10:00 AM</td><td>8:30 PM</td></tr>
+                <tr><th scope="row">Tuesday</th><td>10:00 AM</td><td>8:30 PM</td></tr>
+                <tr><th scope="row">Wednesday</th><td>10:00 AM</td><td>8:30 PM</td></tr>
+                <tr><th scope="row">Thursday</th><td>10:00 AM</td><td>8:30 PM</td></tr>
+                <tr><th scope="row">Friday</th><td>10:00 AM</td><td>9:00 PM</td></tr>
+                <tr><th scope="row">Saturday</th><td>9:00 AM</td><td>9:00 PM</td></tr>
+                <tr><th scope="row">Sunday</th><td>9:00 AM</td><td>8:00 PM</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h2>What is on the menu</h2>
+          <p class="text-muted">
+            The demo menu covers the usual carinderia spread, grouped so you can
+            filter it quickly.
+          </p>
+          <dl class="info-rows">
+            <div class="info-row">
+              <dt>Mga Ulam</dt>
+              <dd>Chicken Adobo, Sisig, Sinigang na Baboy, Kare-Kare, Bicol Express, Menudo, Tinola na Manok</dd>
+            </div>
+            <div class="info-row">
+              <dt>Noodles &amp; Palabok</dt>
+              <dd>Pancit Bihon, Palabok</dd>
+            </div>
+            <div class="info-row">
+              <dt>Rice &amp; Sides</dt>
+              <dd>Sinangag, Pork Silog, Pork BBQ Skewers</dd>
+            </div>
+            <div class="info-row">
+              <dt>Snacks</dt>
+              <dd>Fresh Lumpia, Grilled Hotdog</dd>
+            </div>
+            <div class="info-row">
+              <dt>Sweets (Puso)</dt>
+              <dd>Leche Flan, Halo-Halo, Turon</dd>
+            </div>
+            <div class="info-row">
+              <dt>Drinks</dt>
+              <dd>Sago Gulaman</dd>
+            </div>
+          </dl>
+          <div class="button-row" style="margin-bottom: 0;">
+            <a class="btn btn-primary" href="menu.html">Open the food menu</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h2>Lutong Lokal</h2>
+        <p>Good food, less waiting.</p>
+        <p>
+          A web development prototype built for the IT105 course.
+          Every meal, price, order and account on this site is demonstration data.
+        </p>
+      </div>
+
+      <div>
+        <h3>Pages</h3>
+        <ul class="footer-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Your account</h3>
+        <ul class="footer-list">
+          <li><a href="login.html">Sign in (demo)</a></li>
+          <li><a href="register.html">Register (demo)</a></li>
+          <li><a href="dashboard.html">User dashboard</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Staff</h3>
+        <ul class="footer-list">
+          <li><a href="admin.html">Admin demo area</a></li>
+        </ul>
+        <p style="margin-top: 1rem;">
+          <span class="badge badge-soldout">Demo area</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>
+        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
+        are stored only in this browser. Photos are from Wikimedia Commons under
+        Creative Commons licences — full credits are in the README.
+      </p>
+      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+</body>
+</html>
