@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/cart.js
+   THE UNKNOWN COFFEE — assets/js/cart.js
    The Cart page: shows the cart lines, lets you change quantities, remove
    items, and submit a demo pickup order.
 
@@ -26,7 +26,7 @@
 
   /* ------------------------------------------------------------------
      Availability
-     A dish can be sold out (or removed by the admin) while it sits in the
+     A drink can be sold out (or removed by the admin) while it sits in the
      cart, so the menu is checked again before an order is submitted.
      ------------------------------------------------------------------ */
   function findUnavailableLine(lines) {
@@ -66,7 +66,7 @@
 
     var img = document.createElement("img");
     img.src = line.image;
-    img.alt = line.name + " — sample photo of the dish";
+    img.alt = line.name + " drink";
     img.width = 84;
     img.height = 84;
     img.loading = "lazy";
@@ -89,7 +89,8 @@
 
     var name = document.createElement("p");
     name.className = "cart-line-name";
-    name.textContent = line.name;
+    var sizeLabel = line.size === "large" ? "Large" : "Medium";
+    name.textContent = line.name + " — " + sizeLabel;
 
     var price = document.createElement("p");
     price.className = "cart-line-price";
@@ -106,6 +107,7 @@
     minus.className = "qty-btn";
     minus.setAttribute("data-qty-action", "decrease");
     minus.setAttribute("data-item-id", line.itemId);
+    minus.setAttribute("data-item-size", line.size);
     minus.setAttribute("aria-label", "Decrease the quantity of " + line.name);
     minus.textContent = "−";
     if (line.quantity <= 1) {
@@ -119,6 +121,7 @@
     input.min = "1";
     input.max = String(MAX_QUANTITY);
     input.setAttribute("data-qty-input", line.itemId);
+    input.setAttribute("data-qty-size", line.size);
     input.setAttribute("aria-label", "Quantity of " + line.name);
 
     var plus = document.createElement("button");
@@ -126,6 +129,7 @@
     plus.className = "qty-btn";
     plus.setAttribute("data-qty-action", "increase");
     plus.setAttribute("data-item-id", line.itemId);
+    plus.setAttribute("data-item-size", line.size);
     plus.setAttribute("aria-label", "Increase the quantity of " + line.name);
     plus.textContent = "+";
     if (line.quantity >= MAX_QUANTITY) {
@@ -138,13 +142,14 @@
 
     var lineTotal = document.createElement("span");
     lineTotal.className = "price";
-    lineTotal.setAttribute("data-line-total", line.itemId);
+    lineTotal.setAttribute("data-line-total", line.itemId + "-" + line.size);
     lineTotal.textContent = LutongUI.formatMoney(line.price * line.quantity);
 
     var remove = document.createElement("button");
     remove.type = "button";
     remove.className = "link-button";
     remove.setAttribute("data-remove-item", line.itemId);
+    remove.setAttribute("data-item-size", line.size);
     remove.setAttribute("aria-label", "Remove " + line.name + " from your cart");
     remove.textContent = "Remove";
 
@@ -239,12 +244,12 @@
   /* ------------------------------------------------------------------
      Cart actions
      ------------------------------------------------------------------ */
-  function changeQuantity(itemId, nextQuantity) {
+  function changeQuantity(itemId, size, nextQuantity) {
     var lines = lutongGetCart();
     var changed = false;
 
     for (var i = 0; i < lines.length; i += 1) {
-      if (lines[i].itemId === itemId) {
+      if (lines[i].itemId === itemId && lines[i].size === size) {
         if (nextQuantity < 1) {
           lines.splice(i, 1);
         } else {
@@ -264,13 +269,13 @@
     render();
   }
 
-  function removeLine(itemId) {
+  function removeLine(itemId, size) {
     var lines = lutongGetCart();
     var removed = null;
     var kept = [];
 
     for (var i = 0; i < lines.length; i += 1) {
-      if (lines[i].itemId === itemId && !removed) {
+      if (lines[i].itemId === itemId && lines[i].size === size && !removed) {
         removed = lines[i];
       } else {
         kept.push(lines[i]);
@@ -391,11 +396,11 @@
     successBox.innerHTML = "";
 
     var heading = document.createElement("h2");
-    heading.textContent = "Your demo pickup order is placed";
+    heading.textContent = "Your pickup order is placed";
 
     var paragraph = document.createElement("p");
     paragraph.textContent =
-      "Thanks, " + order.customerName + ". The demo kitchen has received order ";
+      "Thanks, " + order.customerName + ". Your order is saved in this browser as ";
 
     var idNode = document.createElement("span");
     idNode.className = "order-id";
@@ -407,10 +412,19 @@
       LutongUI.formatMoney(order.total) + ". Pick up at the counter at " +
       order.pickupTime.toLowerCase() + ".";
 
+    successBox.appendChild(totalText);
+
     var note = document.createElement("p");
+
     note.textContent =
-      "This is a demonstration order. No payment was taken, no kitchen was notified and no email was sent. " +
+      "No payment was taken and no email was sent. " +
       "You can follow the order status on your dashboard.";
+
+    var pickupDetails = document.createElement("p");
+    pickupDetails.textContent =
+      "Pickup for " + order.pickupTime.toLowerCase() +
+      (order.phone ? " — contact: " + order.phone : "") +
+      (order.pickupNote ? " — drink request: " + order.pickupNote : "");
 
     var actions = document.createElement("div");
     actions.className = "button-row";
@@ -418,7 +432,7 @@
     var dashboardLink = document.createElement("a");
     dashboardLink.className = "btn btn-primary";
     dashboardLink.href = "dashboard.html";
-    dashboardLink.textContent = "View my demo orders";
+    dashboardLink.textContent = "View my orders";
 
     var menuLink = document.createElement("a");
     menuLink.className = "btn btn-outline";
@@ -432,6 +446,7 @@
     successBox.appendChild(paragraph);
     successBox.appendChild(idNode);
     successBox.appendChild(totalText);
+    successBox.appendChild(pickupDetails);
     successBox.appendChild(note);
     successBox.appendChild(actions);
     successBox.hidden = false;
@@ -462,7 +477,7 @@
       return;
     }
 
-    // Stop a sold-out dish from being ordered.
+    // Stop a sold-out drink from being ordered.
     var problem = findUnavailableLine(lines);
     if (problem) {
       LutongUI.setStatus(
@@ -502,27 +517,31 @@
     var actionButton = target.closest ? target.closest("[data-qty-action]") : null;
     if (actionButton) {
       var itemId = actionButton.getAttribute("data-item-id");
+      var size = actionButton.getAttribute("data-item-size");
       var lines = lutongGetCart();
       var current = 0;
 
       for (var i = 0; i < lines.length; i += 1) {
-        if (lines[i].itemId === itemId) {
+        if (lines[i].itemId === itemId && lines[i].size === size) {
           current = lines[i].quantity;
           break;
         }
       }
 
       if (actionButton.getAttribute("data-qty-action") === "increase") {
-        changeQuantity(itemId, current + 1);
+        changeQuantity(itemId, size, current + 1);
       } else {
-        changeQuantity(itemId, current - 1);
+        changeQuantity(itemId, size, current - 1);
       }
       return;
     }
 
     var removeButton = target.closest ? target.closest("[data-remove-item]") : null;
     if (removeButton) {
-      removeLine(removeButton.getAttribute("data-remove-item"));
+      removeLine(
+        removeButton.getAttribute("data-remove-item"),
+        removeButton.getAttribute("data-item-size")
+      );
     }
   }
 
@@ -533,6 +552,7 @@
     }
 
     var itemId = target.getAttribute("data-qty-input");
+    var size = target.getAttribute("data-qty-size");
     if (!itemId) {
       return;
     }
@@ -546,7 +566,7 @@
     }
 
     target.removeAttribute("aria-invalid");
-    changeQuantity(itemId, result.value);
+    changeQuantity(itemId, size, result.value);
   }
 
   function init() {

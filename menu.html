@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Food Menu — Lutong Lokal</title>
-  <meta name="description" content="Browse the demo Lutong Lokal menu: Filipino ulam, noodles, rice and sides, snacks, sweets and drinks with sample prices.">
+  <title>Coffee Menu — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Browse THE UNKNOWN COFFEE menu: coffee and non-coffee flavors with prices.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html" aria-current="page">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -54,59 +54,31 @@
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li aria-current="page">Food Menu</li>
+            <li aria-current="page">Coffee Menu</li>
           </ol>
         </nav>
-        <h1>Food Menu</h1>
+        <h1>Coffee Menu</h1>
         <p>
-          The full demo menu for Lutong Lokal. Search for a dish, filter by
-          category, then add what you want to your cart.
+          Browse THE UNKNOWN COFFEE drinks by flavor, compare medium and large prices, and add your favorites to the cart.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="alert alert-info">
-          <p>
-            <strong>Sample data.</strong> This menu is demonstration data for the
-            IT105 prototype. The stall is not real and no food is being sold.
-            Dishes marked <span class="badge badge-soldout">Sold out</span> cannot
-            be ordered, because the demo kitchen has run out of them.
-          </p>
-        </div>
-
         <div class="menu-toolbar">
-          <div class="field search-field">
-            <label for="menu-search">Search the menu</label>
-            <input
-              type="search" id="menu-search" name="search"
-              placeholder="Type a dish name, for example adobo"
-              autocomplete="off"
-              aria-describedby="menu-search-hint">
-            <p class="field-hint" id="menu-search-hint">
-              Searches dish names and descriptions. Clear the box to show everything.
-            </p>
+          <div class="field">
+            <label for="menu-search">Search drinks</label>
+            <input type="search" id="menu-search" placeholder="Search the coffee menu">
           </div>
-
           <div>
-            <h2 class="filter-heading" id="filter-heading">Filter by category</h2>
-            <div class="filter-chips" id="category-filters" role="group" aria-labelledby="filter-heading"></div>
+            <p class="filter-heading">Filter by category</p>
+            <div class="filter-chips" id="category-filters" aria-label="Drink categories"></div>
           </div>
         </div>
-
-        <div class="alert alert-success" id="menu-status" role="status" aria-live="polite" hidden></div>
-
-        <p class="result-count" id="menu-result-count" role="status" aria-live="polite"></p>
-
-        <div class="grid" id="menu-grid"></div>
-
-        <noscript>
-          <p class="alert alert-warning">
-            JavaScript is turned off, so the menu cannot be searched, filtered or
-            added to a cart. Turn JavaScript on to use the demo ordering features.
-          </p>
-        </noscript>
+        <p id="menu-result-count" class="text-muted" aria-live="polite"></p>
+        <div id="menu-status" class="alert" role="status" aria-live="polite" hidden></div>
+        <div id="menu-grid" class="menu-results"></div>
       </div>
     </section>
   </main>
@@ -114,59 +86,44 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Mobile coffee stall in Davao City, Philippines.</p>
       </div>
-
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
-
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
-
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
-
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 
   <script src="assets/js/data.js"></script>
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/ui.js"></script>
-  <script src="assets/js/orders.js"></script>
   <script src="assets/js/menu.js"></script>
 </body>
 </html>

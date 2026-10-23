@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/admin.js
+   THE UNKNOWN COFFEE — assets/js/admin.js
    The demo admin area: manage menu items and their availability, view the
    demo orders and change their status.
 
@@ -43,7 +43,9 @@
     categoryCell.textContent = LutongUI.categoryName(item.category);
 
     var priceCell = document.createElement("td");
-    priceCell.textContent = LutongUI.formatMoney(item.price);
+    priceCell.textContent =
+      LutongUI.formatMoney(item.priceMedium) + " / " +
+      LutongUI.formatMoney(item.priceLarge);
 
     var availableCell = document.createElement("td");
     var availableBadge = document.createElement("span");
@@ -129,11 +131,23 @@
 
     var whoCell = document.createElement("td");
     whoCell.textContent = order.customerName;
+    var customerDetails = document.createElement("p");
+    customerDetails.className = "text-muted";
+    customerDetails.style.marginBottom = "0";
+    customerDetails.textContent =
+      order.contactEmail +
+      (order.phone ? " — " + order.phone : "") +
+      (order.pickupTime ? " — pickup: " + order.pickupTime : "") +
+      (order.pickupNote ? " — drink request: " + order.pickupNote : "");
+    whoCell.appendChild(customerDetails);
 
     var itemsCell = document.createElement("td");
     var parts = [];
     for (var i = 0; i < order.items.length; i += 1) {
-      parts.push(order.items[i].quantity + " x " + order.items[i].name);
+      parts.push(
+        order.items[i].quantity + " x " + order.items[i].name + " (" +
+        (order.items[i].size === "large" ? "Large" : "Medium") + ")"
+      );
     }
     itemsCell.textContent = parts.join(", ");
 
@@ -190,7 +204,7 @@
       var emptyCell = document.createElement("td");
       emptyCell.colSpan = 6;
       emptyCell.className = "text-muted";
-      emptyCell.textContent = "No demo orders yet. Place a pickup order from the cart page to see it here.";
+      emptyCell.textContent = "No orders yet. Place a pickup order from the cart page to see it here.";
       emptyRow.appendChild(emptyCell);
       body.appendChild(emptyRow);
 
@@ -261,7 +275,7 @@
   }
 
   /* Makes sure the category dropdown lists every real category from
-     data.js. The "All Items" entry is a filter, not a dish category, so it is
+     data.js. The "All Drinks" entry is a filter, not a drink category, so it is
      left out. */
   function syncCategoryOptions() {
     var select = byId("menu-item-category");
@@ -332,7 +346,8 @@
 
     byId("menu-item-name").value = item.name;
     byId("menu-item-description").value = item.description;
-    byId("menu-item-price").value = String(item.price);
+    byId("menu-item-price-medium").value = String(item.priceMedium);
+    byId("menu-item-price-large").value = String(item.priceLarge);
     byId("menu-item-category").value = item.category;
     byId("menu-item-image").value = item.image;
     byId("menu-item-available").checked = item.available;
@@ -357,7 +372,7 @@
   }
 
   function clearFormErrors() {
-    var ids = ["menu-item-name", "menu-item-description", "menu-item-price", "menu-item-category", "menu-item-image"];
+    var ids = ["menu-item-name", "menu-item-description", "menu-item-price-medium", "menu-item-price-large", "menu-item-category", "menu-item-image"];
     for (var i = 0; i < ids.length; i += 1) {
       var field = byId(ids[i]);
       var error = byId(ids[i] + "-error");
@@ -389,14 +404,15 @@
 
     var nameField = byId("menu-item-name");
     var descriptionField = byId("menu-item-description");
-    var priceField = byId("menu-item-price");
+    var priceMediumField = byId("menu-item-price-medium");
+    var priceLargeField = byId("menu-item-price-large");
     var categoryField = byId("menu-item-category");
     var imageField = byId("menu-item-image");
     var availableField = byId("menu-item-available");
 
-    var nameCheck = LutongValidate.required(nameField.value, "Dish name");
+    var nameCheck = LutongValidate.required(nameField.value, "Drink name");
     if (nameCheck.ok && (nameCheck.value.length < 2 || nameCheck.value.length > 80)) {
-      nameCheck = { ok: false, message: "Dish name must be between 2 and 80 characters." };
+      nameCheck = { ok: false, message: "Drink name must be between 2 and 80 characters." };
     }
 
     var descriptionCheck = LutongValidate.required(descriptionField.value, "Description");
@@ -404,7 +420,8 @@
       descriptionCheck = { ok: false, message: "Description must be between 5 and 400 characters." };
     }
 
-    var priceCheck = LutongValidate.price(priceField.value);
+    var priceMediumCheck = LutongValidate.price(priceMediumField.value);
+    var priceLargeCheck = LutongValidate.price(priceLargeField.value);
 
     var categoryValue = String(categoryField.value || "");
     var categoryCheck = { ok: true, value: categoryValue };
@@ -426,14 +443,19 @@
       imageCheck = { ok: false, message: "Please enter an image URL." };
     } else if (imageValue.length > 500) {
       imageCheck = { ok: false, message: "Image URL must be 500 characters or fewer." };
-    } else if (imageValue.indexOf("http://") !== 0 && imageValue.indexOf("https://") !== 0) {
-      imageCheck = { ok: false, message: "Image URL must start with http:// or https://." };
+    } else if (
+      imageValue.indexOf("http://") !== 0 &&
+      imageValue.indexOf("https://") !== 0 &&
+      (!/^assets\/img\/[A-Za-z0-9._/-]+$/.test(imageValue) || imageValue.indexOf("..") !== -1)
+    ) {
+      imageCheck = { ok: false, message: "Use an https:// URL or a project image path under assets/img/." };
     }
 
     var checks = [
       { id: "menu-item-name", result: nameCheck },
       { id: "menu-item-description", result: descriptionCheck },
-      { id: "menu-item-price", result: priceCheck },
+      { id: "menu-item-price-medium", result: priceMediumCheck },
+      { id: "menu-item-price-large", result: priceLargeCheck },
       { id: "menu-item-category", result: categoryCheck },
       { id: "menu-item-image", result: imageCheck }
     ];
@@ -470,7 +492,9 @@
         if (menu[m].id === editingId) {
           menu[m].name = nameCheck.value;
           menu[m].description = descriptionCheck.value;
-          menu[m].price = priceCheck.value;
+          menu[m].price = priceMediumCheck.value;
+          menu[m].priceMedium = priceMediumCheck.value;
+          menu[m].priceLarge = priceLargeCheck.value;
           menu[m].category = categoryValue;
           menu[m].image = imageValue;
           menu[m].available = available;
@@ -493,7 +517,9 @@
         id: newId,
         name: nameCheck.value,
         description: descriptionCheck.value,
-        price: priceCheck.value,
+        price: priceMediumCheck.value,
+        priceMedium: priceMediumCheck.value,
+        priceLarge: priceLargeCheck.value,
         category: categoryValue,
         image: imageValue,
         available: available,
@@ -501,7 +527,7 @@
         createdAt: new Date().toISOString()
       });
       lutongSaveMenu(menu);
-      LutongUI.setStatus(statusBox, "\"" + nameCheck.value + "\" was added to the demo menu.", "success");
+      LutongUI.setStatus(statusBox, "\"" + nameCheck.value + "\" was added to the menu.", "success");
     }
 
     resetForm();
@@ -566,7 +592,7 @@
     LutongUI.refreshCartBadge();
 
     renderMenu();
-    LutongUI.setStatus(statusBox, "\"" + removed.name + "\" was deleted from the demo menu.", "success");
+    LutongUI.setStatus(statusBox, "\"" + removed.name + "\" was deleted from the menu.", "success");
   }
 
   /* ------------------------------------------------------------------

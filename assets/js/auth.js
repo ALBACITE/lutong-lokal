@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/auth.js
+   THE UNKNOWN COFFEE — assets/js/auth.js
    The DEMO sign-in and registration.
 
    READ THIS BEFORE USING THE SITE
@@ -77,7 +77,7 @@ var LutongAuth = (function () {
       return { ok: false, field: "email", message: "Email address is required." };
     }
     if (!code) {
-      return { ok: false, field: "passcode", message: "Demo passcode is required." };
+      return { ok: false, field: "passcode", message: "Account passcode is required." };
     }
 
     var demo = findDemoAccount(name);
@@ -87,7 +87,7 @@ var LutongAuth = (function () {
       return {
         ok: false,
         field: "username",
-        message: "No demo account uses that username. Use demo, admin, or an account you registered."
+        message: "No account uses that username. Please try a registered username or your staff account."
       };
     }
 
@@ -97,7 +97,7 @@ var LutongAuth = (function () {
       return {
         ok: false,
         field: "email",
-        message: "That email address does not match this demo account."
+        message: "That email address does not match this account."
       };
     }
 
@@ -107,7 +107,7 @@ var LutongAuth = (function () {
     var expected = demo ? demo.passcode : LUTONG_REGISTERED_PASSCODE;
 
     if (code !== expected) {
-      return { ok: false, field: "passcode", message: "That demo passcode is not correct." };
+      return { ok: false, field: "passcode", message: "That passcode is not correct." };
     }
 
     var session = {

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/login.js
+   THE UNKNOWN COFFEE — assets/js/login.js
    Handles the demo sign-in form on login.html.
    ========================================================================== */
 

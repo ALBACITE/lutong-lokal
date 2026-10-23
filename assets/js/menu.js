@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/menu.js
-   The Food Menu page: renders the menu from stored data, filters it by
-   category and by a search term, and adds dishes to the cart.
+   THE UNKNOWN COFFEE — assets/js/menu.js
+   The Coffee Menu page: renders the menu from stored data, filters it by
+   category and by a search term, and adds drinks to the cart.
 
    The menu is always re-read from storage, so a change made in the admin
    area shows up here as soon as the page is loaded or refreshed.
@@ -65,7 +65,7 @@
     var img = document.createElement("img");
     img.className = "card-img";
     img.src = item.image;
-    img.alt = item.name + " — sample photo of the dish used in the demo menu";
+    img.alt = item.name + " drink";
     img.width = 500;
     img.height = 375;
     img.loading = "lazy";
@@ -113,9 +113,20 @@
     var footer = document.createElement("div");
     footer.className = "card-footer";
 
-    var price = document.createElement("span");
-    price.className = "price";
-    price.textContent = LutongUI.formatMoney(item.price);
+    var purchase = document.createElement("div");
+    purchase.className = "drink-purchase";
+
+    var sizeSelect = document.createElement("select");
+    sizeSelect.setAttribute("data-size-select", item.id);
+    sizeSelect.setAttribute("aria-label", "Choose a size for " + item.name);
+    var mediumOption = document.createElement("option");
+    mediumOption.value = "medium";
+    mediumOption.textContent = "Medium — " + LutongUI.formatMoney(item.priceMedium);
+    var largeOption = document.createElement("option");
+    largeOption.value = "large";
+    largeOption.textContent = "Large — " + LutongUI.formatMoney(item.priceLarge);
+    sizeSelect.appendChild(mediumOption);
+    sizeSelect.appendChild(largeOption);
 
     var button = document.createElement("button");
     button.type = "button";
@@ -132,7 +143,8 @@
       button.setAttribute("aria-label", item.name + " is sold out and cannot be ordered");
     }
 
-    footer.appendChild(price);
+    purchase.appendChild(sizeSelect);
+    footer.appendChild(purchase);
     footer.appendChild(button);
 
     body.appendChild(meta);
@@ -188,12 +200,12 @@
     wrapper.className = "empty-state";
 
     var heading = document.createElement("h3");
-    heading.textContent = "No dishes match your search";
+    heading.textContent = "No drinks match your search";
 
     var text = document.createElement("p");
     text.textContent = searchTerm
       ? "Nothing on the menu matches \"" + searchTerm + "\". Try a different word, or pick another category."
-      : "There are no dishes in this category right now. Try another category or clear the search.";
+      : "There are no drinks in this category right now. Try another category or clear the search.";
 
     var actions = document.createElement("div");
     actions.className = "button-row";
@@ -227,8 +239,32 @@
 
     grid.innerHTML = "";
 
-    for (var i = 0; i < visible.length; i += 1) {
-      grid.appendChild(buildCard(visible[i]));
+    var categoryIds = activeCategory === "all" ? ["coffee", "non-coffee"] : [activeCategory];
+
+    for (var c = 0; c < categoryIds.length; c += 1) {
+      var categoryId = categoryIds[c];
+      var categoryItems = [];
+      for (var i = 0; i < visible.length; i += 1) {
+        if (visible[i].category === categoryId) {
+          categoryItems.push(visible[i]);
+        }
+      }
+      if (categoryItems.length === 0) {
+        continue;
+      }
+
+      var categorySection = document.createElement("section");
+      categorySection.className = "menu-category";
+      var categoryHeading = document.createElement("h2");
+      categoryHeading.textContent = LutongUI.categoryName(categoryId);
+      var categoryGrid = document.createElement("div");
+      categoryGrid.className = "grid";
+      for (var j = 0; j < categoryItems.length; j += 1) {
+        categoryGrid.appendChild(buildCard(categoryItems[j]));
+      }
+      categorySection.appendChild(categoryHeading);
+      categorySection.appendChild(categoryGrid);
+      grid.appendChild(categorySection);
     }
 
     if (visible.length === 0) {
@@ -238,6 +274,13 @@
     LutongUI.applyImageFallbacks(grid);
     renderFilters();
     renderCount(visible.length);
+
+    if (window.location.hash.indexOf("#item-") === 0) {
+      var target = document.getElementById(window.location.hash.slice(1));
+      if (target) {
+        target.scrollIntoView({ block: "start" });
+      }
+    }
   }
 
   function renderCount(visibleCount) {
@@ -254,21 +297,21 @@
 
     countBox.appendChild(
       document.createTextNode(
-        visibleCount === 1 ? " dish shown" : " dishes shown"
+        visibleCount === 1 ? " drink shown" : " drinks shown"
       )
     );
 
     if (visibleCount !== total) {
-      countBox.appendChild(document.createTextNode(" out of " + total + " on the demo menu."));
+      countBox.appendChild(document.createTextNode(" out of " + total + " on the menu."));
     } else {
-      countBox.appendChild(document.createTextNode(" on the demo menu."));
+      countBox.appendChild(document.createTextNode(" on the menu."));
     }
   }
 
   /* ------------------------------------------------------------------
      Cart
      ------------------------------------------------------------------ */
-  function addToCart(itemId) {
+  function addToCart(itemId, size) {
     var menu = lutongGetMenu();
     var item = null;
 
@@ -280,7 +323,7 @@
     }
 
     if (!item) {
-      LutongUI.setStatus(statusBox, "That dish is no longer on the menu.", "error");
+      LutongUI.setStatus(statusBox, "That drink is no longer on the menu.", "error");
       return;
     }
 
@@ -289,11 +332,13 @@
       return;
     }
 
+    var selectedSize = size === "large" ? "large" : "medium";
+    var price = selectedSize === "large" ? item.priceLarge : item.priceMedium;
     var lines = lutongGetCart();
     var found = false;
 
     for (var j = 0; j < lines.length; j += 1) {
-      if (lines[j].itemId === item.id) {
+      if (lines[j].itemId === item.id && lines[j].size === selectedSize) {
         if (lines[j].quantity >= 99) {
           LutongUI.setStatus(statusBox, "The maximum quantity for " + item.name + " is 99.", "error");
           return;
@@ -308,7 +353,8 @@
       lines.push({
         itemId: item.id,
         name: item.name,
-        price: item.price,
+        price: price,
+        size: selectedSize,
         quantity: 1,
         image: item.image
       });
@@ -316,7 +362,7 @@
 
     lutongSaveCart(lines);
     LutongUI.refreshCartBadge();
-    LutongUI.setStatus(statusBox, item.name + " was added to your cart.", "success");
+    LutongUI.setStatus(statusBox, item.name + " (" + (selectedSize === "large" ? "Large" : "Medium") + ") was added to your cart.", "success");
   }
 
   /* ------------------------------------------------------------------
@@ -330,7 +376,10 @@
 
     var addButton = target.closest ? target.closest("[data-add-item]") : null;
     if (addButton) {
-      addToCart(addButton.getAttribute("data-add-item"));
+      var card = addButton.closest(".card");
+      var sizeSelect = card ? card.querySelector("[data-size-select]") : null;
+      var size = sizeSelect ? sizeSelect.value : "medium";
+      addToCart(addButton.getAttribute("data-add-item"), size);
       return;
     }
 

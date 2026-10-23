@@ -1,13 +1,13 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/home.js
-   Fills the "Signature Dishes" row on the home page from the menu data,
+   THE UNKNOWN COFFEE — assets/js/home.js
+   Fills the Popular Drinks row on the home page from the menu data,
    so the home page always matches what the menu (and the admin) says.
    ========================================================================== */
 
 (function () {
   "use strict";
 
-  function renderFeaturedDishes() {
+  function renderFeaturedDrinks() {
     var grid = document.getElementById("featured-grid");
     if (!grid) {
       return;
@@ -22,7 +22,7 @@
       }
     }
 
-    // If an admin unmarks every dish, show the first available ones so the
+    // If an admin unmarks every drink, show the first available ones so the
     // home page is never empty.
     if (featured.length === 0) {
       for (var j = 0; j < menu.length && featured.length < 4; j += 1) {
@@ -42,7 +42,7 @@
   }
 
   function init() {
-    renderFeaturedDishes();
+    renderFeaturedDrinks();
   }
 
   if (document.readyState === "loading") {

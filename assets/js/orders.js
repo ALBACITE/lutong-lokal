@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/orders.js
+   THE UNKNOWN COFFEE — assets/js/orders.js
    Shared helpers for demo orders.
 
    Used by:
@@ -65,6 +65,7 @@ var LutongOrders = (function () {
       items.push({
         name: line.name,
         price: line.price,
+        size: line.size === "large" ? "large" : "medium",
         quantity: line.quantity,
         lineTotal: lineTotal
       });

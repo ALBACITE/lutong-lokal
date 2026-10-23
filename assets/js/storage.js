@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/storage.js
+   THE UNKNOWN COFFEE — assets/js/storage.js
    A small, defensive wrapper around localStorage and sessionStorage.
 
    Why this file exists
@@ -18,6 +18,17 @@ var LUTONG_STORAGE_KEYS = {
   myOrders: "lutonglokal.myorders.v1",
   messages: "lutonglokal.messages.v1"
 };
+
+var LUTONG_LEGACY_MENU_NAMES = [
+  "Chicken Adobo",
+  "Sisig",
+  "Pancit Bihon",
+  "Leche Flan",
+  "Bicol Express",
+  "Tinola",
+  "Pork BBQ",
+  "Beef Caldereta"
+];
 
 /* Returns the storage area, or null when the browser blocks it entirely. */
 function lutongGetStore(useSession) {
@@ -123,19 +134,29 @@ function lutongCleanMenuItem(raw) {
     return null;
   }
 
-  var price = Number(raw.price);
-  if (!isFinite(price) || price < 0) {
-    price = 0;
+  var priceMedium = Number(raw.priceMedium);
+  if (!isFinite(priceMedium) || priceMedium < 0) {
+    priceMedium = Number(raw.price);
+  }
+  if (!isFinite(priceMedium) || priceMedium < 0) {
+    priceMedium = 0;
   }
 
-  var category = String(raw.category || "main-dish").trim();
+  var priceLarge = Number(raw.priceLarge);
+  if (!isFinite(priceLarge) || priceLarge < 0) {
+    priceLarge = priceMedium;
+  }
+
+  var category = String(raw.category || "coffee").trim();
   var image = String(raw.image || "").trim();
 
   return {
     id: id,
     name: name.slice(0, 80),
     description: String(raw.description || "").slice(0, 400),
-    price: Math.round(price * 100) / 100,
+    price: Math.round(priceMedium * 100) / 100,
+    priceMedium: Math.round(priceMedium * 100) / 100,
+    priceLarge: Math.round(priceLarge * 100) / 100,
     category: category,
     image: image.slice(0, 500),
     available: raw.available !== false,
@@ -166,6 +187,7 @@ function lutongCleanCartLine(raw) {
     itemId: itemId,
     name: name.slice(0, 80),
     price: Math.round(price * 100) / 100,
+    size: raw.size === "large" ? "large" : "medium",
     quantity: Math.min(quantity, 99),
     image: String(raw.image || "").slice(0, 500)
   };
@@ -192,15 +214,23 @@ function lutongCleanOrder(raw) {
     var name = String(line.name || "").trim();
     var price = Number(line.price);
     var quantity = Math.floor(Number(line.quantity));
+    if (LUTONG_LEGACY_MENU_NAMES.indexOf(name) !== -1) {
+      continue;
+    }
     if (!name || !isFinite(price) || !isFinite(quantity) || quantity < 1) {
       continue;
     }
     items.push({
       name: name.slice(0, 80),
       price: Math.round(price * 100) / 100,
+      size: line.size === "large" ? "large" : "medium",
       quantity: Math.min(quantity, 99),
       lineTotal: Math.round(price * 100) * Math.min(quantity, 99) / 100
     });
+  }
+
+  if (items.length === 0) {
+    return null;
   }
 
   var subtotal = lutongSumMoney(items);
@@ -297,13 +327,57 @@ function lutongSumMoney(items) {
   return totalCentavos / 100;
 }
 
+function lutongGetSeedMenu() {
+  var seeded = [];
+  for (var i = 0; i < LUTONG_MENU_SEED.length; i += 1) {
+    var item = lutongCleanMenuItem(LUTONG_MENU_SEED[i]);
+    if (item) {
+      seeded.push(item);
+    }
+  }
+  return seeded;
+}
+
+function lutongNeedsMenuReset(stored) {
+  if (!Array.isArray(stored) || stored.length === 0) {
+    return true;
+  }
+
+  var validCategory = {
+    coffee: true,
+    "non-coffee": true
+  };
+
+  for (var i = 0; i < stored.length; i += 1) {
+    var item = lutongCleanMenuItem(stored[i]);
+    if (!item) {
+      return true;
+    }
+
+    if (item.category && !validCategory[item.category]) {
+      return true;
+    }
+
+    if (LUTONG_LEGACY_MENU_NAMES.indexOf(item.name) !== -1) {
+      return true;
+    }
+
+    if (stored[i].priceMedium === undefined || stored[i].priceLarge === undefined) {
+      return true;
+    }
+
+    if (!item.image) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function lutongGetMenu() {
   var stored = lutongRead(LUTONG_STORAGE_KEYS.menu, null, false);
-  if (!Array.isArray(stored)) {
-    var seeded = [];
-    for (var i = 0; i < LUTONG_MENU_SEED.length; i += 1) {
-      seeded.push(lutongCleanMenuItem(LUTONG_MENU_SEED[i]));
-    }
+  if (!Array.isArray(stored) || lutongNeedsMenuReset(stored)) {
+    var seeded = lutongGetSeedMenu();
     lutongWrite(LUTONG_STORAGE_KEYS.menu, seeded, false);
     return seeded;
   }
@@ -336,10 +410,19 @@ function lutongGetCart() {
   }
 
   var clean = [];
+  var menu = lutongGetMenu();
   for (var i = 0; i < stored.length; i += 1) {
     var line = lutongCleanCartLine(stored[i]);
     if (line) {
-      clean.push(line);
+      for (var j = 0; j < menu.length; j += 1) {
+        if (menu[j].id === line.itemId) {
+          line.name = menu[j].name;
+          line.image = menu[j].image;
+          line.price = line.size === "large" ? menu[j].priceLarge : menu[j].priceMedium;
+          clean.push(line);
+          break;
+        }
+      }
     }
   }
   return clean;
@@ -347,10 +430,19 @@ function lutongGetCart() {
 
 function lutongSaveCart(lines) {
   var clean = [];
+  var menu = lutongGetMenu();
   for (var i = 0; i < lines.length; i += 1) {
     var line = lutongCleanCartLine(lines[i]);
     if (line) {
-      clean.push(line);
+      for (var j = 0; j < menu.length; j += 1) {
+        if (menu[j].id === line.itemId) {
+          line.name = menu[j].name;
+          line.image = menu[j].image;
+          line.price = line.size === "large" ? menu[j].priceLarge : menu[j].priceMedium;
+          clean.push(line);
+          break;
+        }
+      }
     }
   }
   return lutongWrite(LUTONG_STORAGE_KEYS.cart, clean, false);

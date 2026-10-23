@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Register (demo) — Lutong Lokal</title>
-  <meta name="description" content="Create a demo customer account for the Lutong Lokal prototype. Registration never grants administrator access.">
+  <title>Register — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Create a customer account for THE UNKNOWN COFFEE to save your order history and pickup details.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -57,61 +57,36 @@
             <li aria-current="page">Register</li>
           </ol>
         </nav>
-        <h1>Create a demo customer account</h1>
+        <h1>Create your customer account</h1>
         <p>
-          Registering gives you a customer account so you can keep your demo
-          orders together in one place.
+          Register to keep your orders and pickup details in one place.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="container split-layout">
-        <div>
-          <div class="alert alert-warning">
-            <p>
-              <strong>Demo registration is not a secure sign-up.</strong>
-              The account is created inside your browser and is visible to anybody
-              who uses the same browser profile. Do not enter real personal
-              information, and never use a password you use elsewhere.
-            </p>
-          </div>
 
-          <h2>What this prototype stores</h2>
+          <h2>What this account stores</h2>
           <p class="text-muted">
-            Only what is needed to show the feature working:
+            We only keep the details needed for a customer account and order history.
           </p>
           <dl class="info-rows">
             <div class="info-row">
               <dt>Your name</dt>
-              <dd>Shown on your dashboard and on your demo orders.</dd>
+              <dd>Shown on your dashboard and order history.</dd>
             </div>
             <div class="info-row">
               <dt>Username</dt>
-              <dd>Used to sign in to the demo site.</dd>
+              <dd>Used to sign in to your account.</dd>
             </div>
             <div class="info-row">
               <dt>Email address</dt>
-              <dd>Used to sign in to the demo site. Please use an address you control.</dd>
+              <dd>Used to sign in and identify your account.</dd>
             </div>
           </dl>
 
-          <div class="alert alert-info">
-            <p>
-              <strong>No passwords are collected.</strong>
-              The demo sign-in uses a public demo passcode instead of a password,
-              so there is nothing sensitive to store. A real version of this site
-              would need a trusted backend or an authentication provider with
-              server-side access rules, hashed passwords and secure sessions.
-            </p>
-          </div>
-
-          <h3>Already have the demo customer account?</h3>
-          <p class="text-muted">
-            Use <span class="mono">demo</span> /
-            <span class="mono">demo@lutonglokal.test</span> with the passcode
-            <span class="mono">demo123</span>.
-          </p>
+          <h3>Already have an account?</h3>
           <div class="button-row" style="margin-bottom: 0;">
             <a class="btn btn-primary" href="login.html">Go to sign in</a>
           </div>
@@ -157,13 +132,12 @@
                 </div>
 
                 <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Create demo account</button>
+                  <button class="btn btn-primary" type="submit">Create account</button>
                   <a class="btn btn-outline" href="login.html">I already have one</a>
                 </div>
 
                 <p class="field-hint mb-0">
-                  New accounts are always created as customer accounts. There is no
-                  option to register as an administrator.
+                  New accounts are always created as customer accounts.
                 </p>
               </div>
             </form>
@@ -176,52 +150,42 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

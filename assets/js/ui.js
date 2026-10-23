@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/ui.js
+   THE UNKNOWN COFFEE — assets/js/ui.js
    Shared user-interface helpers used by every page.
 
    This file only deals with presentation: navigation state, the cart badge,
@@ -256,7 +256,7 @@ var LutongUI = (function () {
     var img = document.createElement("img");
     img.className = "card-img";
     img.src = item.image;
-    img.alt = item.name + " — sample photo of the dish used in the demo menu";
+    img.alt = item.name + " drink";
     img.width = 500;
     img.height = 375;
     img.loading = "lazy";
@@ -307,7 +307,9 @@ var LutongUI = (function () {
 
     var price = document.createElement("span");
     price.className = "price";
-    price.textContent = formatMoney(item.price);
+    price.textContent =
+      "M " + formatMoney(item.priceMedium) + " / L " +
+      formatMoney(item.priceLarge);
 
     var link = document.createElement("a");
     link.className = "btn btn-outline btn-sm";

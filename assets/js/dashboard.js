@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/dashboard.js
+   THE UNKNOWN COFFEE — assets/js/dashboard.js
    The customer dashboard: shows the signed-in demo account and the demo
    orders placed on this device or under that account, with their status.
 
@@ -14,6 +14,7 @@
   var signedOutBox = null;
   var signedInBox = null;
   var ordersBox = null;
+  var guestOrdersBox = null;
 
   function byId(id) {
     return document.getElementById(id);
@@ -54,7 +55,10 @@
     for (var i = 0; i < order.items.length; i += 1) {
       var item = order.items[i];
       var row = document.createElement("li");
-      row.textContent = item.quantity + " x " + item.name + " — " + LutongUI.formatMoney(item.lineTotal);
+      row.textContent =
+        item.quantity + " x " + item.name + " (" +
+        (item.size === "large" ? "Large" : "Medium") + ") — " +
+        LutongUI.formatMoney(item.lineTotal);
       list.appendChild(row);
     }
 
@@ -69,7 +73,8 @@
     details.textContent =
       "Collecting as " + order.customerName +
       (order.phone ? " — " + order.phone : "") +
-      (order.pickupNote ? " — note: " + order.pickupNote : "");
+      (order.contactEmail ? " — " + order.contactEmail : "") +
+      (order.pickupNote ? " — drink request: " + order.pickupNote : "");
 
     body.appendChild(head);
     body.appendChild(meta);
@@ -81,26 +86,27 @@
     return card;
   }
 
-  function renderOrders() {
-    if (!ordersBox) {
+  function renderOrders(target) {
+    var targetBox = target || ordersBox;
+    if (!targetBox) {
       return;
     }
 
     var session = LutongAuth.getSession();
     var orders = LutongOrders.getForCustomer(session ? session.username : "");
 
-    ordersBox.innerHTML = "";
+    targetBox.innerHTML = "";
 
     if (orders.length === 0) {
       var empty = document.createElement("div");
       empty.className = "empty-state";
 
       var heading = document.createElement("h3");
-      heading.textContent = "No demo orders yet";
+      heading.textContent = "No orders yet";
 
       var text = document.createElement("p");
       text.textContent =
-        "You have not placed a demo pickup order on this device. Orders you place will appear here with their status.";
+        "You have not placed a pickup order on this device. Orders you place will appear here with their status.";
 
       var actions = document.createElement("div");
       actions.className = "button-row";
@@ -108,18 +114,18 @@
       var menuLink = document.createElement("a");
       menuLink.className = "btn btn-primary";
       menuLink.href = "menu.html";
-      menuLink.textContent = "Browse the food menu";
+      menuLink.textContent = "Browse the coffee menu";
 
       actions.appendChild(menuLink);
       empty.appendChild(heading);
       empty.appendChild(text);
       empty.appendChild(actions);
-      ordersBox.appendChild(empty);
+      targetBox.appendChild(empty);
       return;
     }
 
     for (var i = 0; i < orders.length; i += 1) {
-      ordersBox.appendChild(buildOrderCard(orders[i]));
+      targetBox.appendChild(buildOrderCard(orders[i]));
     }
   }
 
@@ -146,7 +152,7 @@
       welcomeBox.hidden = !session.isNew;
       if (session.isNew) {
         welcomeBox.textContent =
-          "Welcome, " + session.displayName + ". Your demo customer account is ready and you are signed in.";
+          "Welcome, " + session.displayName + ". Your account is ready and you are signed in.";
       }
     }
   }
@@ -161,6 +167,7 @@
       if (signedInBox) {
         signedInBox.hidden = true;
       }
+      renderOrders(guestOrdersBox);
       return;
     }
 
@@ -172,13 +179,14 @@
     }
 
     renderAccount(session);
-    renderOrders();
+    renderOrders(ordersBox);
   }
 
   function init() {
     signedOutBox = byId("dashboard-signed-out");
     signedInBox = byId("dashboard-signed-in");
     ordersBox = byId("dashboard-orders");
+    guestOrdersBox = byId("dashboard-guest-orders");
 
     if (!signedOutBox && !signedInBox) {
       return;
@@ -190,7 +198,7 @@
     // without a manual refresh.
     window.addEventListener("storage", function (event) {
       if (event.key === "lutonglokal.orders.v1") {
-        renderOrders();
+        render();
       }
     });
   }

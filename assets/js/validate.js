@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/validate.js
+   THE UNKNOWN COFFEE — assets/js/validate.js
    Shared form validation helpers.
 
    Every rule lives here so the menu order form, the contact form, the

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact — Lutong Lokal</title>
-  <meta name="description" content="Contact the Lutong Lokal demo stall. The contact form on this prototype is validated locally and does not send real emails.">
+  <title>Contact — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Contact THE UNKNOWN COFFEE. The contact form is validated locally.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -57,10 +57,10 @@
             <li aria-current="page">Contact</li>
           </ol>
         </nav>
-        <h1>Contact Lutong Lokal</h1>
+        <h1>Contact Us</h1>
         <p>
-          Questions about the demo menu, a large order enquiry, or something
-          that needs fixing? Send a message using the form.
+          Questions about our menu, a large order enquiry, or something else?
+          Send us a message.
         </p>
       </div>
     </section>
@@ -68,69 +68,37 @@
     <section class="section">
       <div class="container split-layout">
         <div>
-          <h2>Demo stall details</h2>
-          <p class="text-muted">
-            These are demonstration details for the classroom prototype.
-            Nothing here reaches a real stall, inbox or phone line.
-          </p>
+          <h2>Stall details</h2>
+          <p class="text-muted">Our current location may change. Please confirm the latest location shared by THE UNKNOWN COFFEE before pickup.</p>
 
           <dl class="info-rows">
             <div class="info-row">
-              <dt>Demo address</dt>
-              <dd>12 Maharlika Street, Barangay San Isidro (sample address)</dd>
-            </div>
-            <div class="info-row">
-              <dt>Demo email</dt>
-              <dd>hello@lutonglokal.test (a reserved test address)</dd>
-            </div>
-            <div class="info-row">
-              <dt>Demo phone</dt>
-              <dd>+63 2 5555 0142 (a reserved test number)</dd>
-            </div>
-            <div class="info-row">
-              <dt>Kitchen hours</dt>
-              <dd>Daily, 10:00 AM to 9:00 PM</dd>
-            </div>
-            <div class="info-row">
-              <dt>Pickup counter</dt>
-              <dd>Window 2 — look for the orange sign</dd>
+              <dt>Location</dt>
+              <dd>Davao City, Philippines</dd>
             </div>
           </dl>
 
-          <div class="alert alert-warning">
-            <p>
-              <strong>No email is sent from this prototype.</strong>
-              The form below checks your input and stores the message in this
-              browser only, so the admin demo area can show it. It does not
-              connect to a mail server, so nobody actually receives it.
-            </p>
-          </div>
-
-          <h3>Looking for the menu?</h3>
+          <h3>Location updates</h3>
           <p class="text-muted">
-            All the dishes, prices and availability live on the
-            <a href="menu.html">Food Menu</a> page.
+            Since our stall is mobile, the current location may change. Please confirm the latest location shared by THE UNKNOWN COFFEE before pickup.
           </p>
         </div>
 
         <div>
           <div class="form-card">
             <h2>Send a message</h2>
-            <p class="text-muted">
-              All fields are required. The form validates as you type.
-            </p>
+            <p class="text-muted">All fields are required.</p>
 
             <div class="alert alert-success" id="contact-status" role="status" aria-live="polite" hidden></div>
 
             <form id="contact-form" novalidate>
               <div class="form-grid">
                 <div class="field">
-                  <label for="contact-name">Your name <span class="required" aria-hidden="true">*</span></label>
+                  <label for="contact-name">Full name <span class="required" aria-hidden="true">*</span></label>
                   <input
                     type="text" id="contact-name" name="name"
-                    autocomplete="name" maxlength="60" required
-                    aria-describedby="contact-name-error"
-                    placeholder="e.g. Maria Santos">
+                    autocomplete="name" maxlength="80" required
+                    aria-describedby="contact-name-error">
                   <p class="field-error" id="contact-name-error" hidden></p>
                 </div>
 
@@ -139,21 +107,16 @@
                   <input
                     type="email" id="contact-email" name="email"
                     autocomplete="email" maxlength="120" required
-                    aria-describedby="contact-email-hint contact-email-error"
-                    placeholder="e.g. maria@example.com">
-                  <p class="field-hint" id="contact-email-hint">Use an address you control. Demo data only.</p>
+                    aria-describedby="contact-email-error">
                   <p class="field-error" id="contact-email-error" hidden></p>
                 </div>
 
                 <div class="field">
                   <label for="contact-subject">Subject <span class="required" aria-hidden="true">*</span></label>
-                  <select id="contact-subject" name="subject" required aria-describedby="contact-subject-error">
-                    <option value="">Please choose a subject</option>
-                    <option value="General enquiry">General enquiry</option>
-                    <option value="Feedback about a meal">Feedback about a meal</option>
-                    <option value="Large order enquiry">Large order enquiry</option>
-                    <option value="Report a problem">Report a problem</option>
-                  </select>
+                  <input
+                    type="text" id="contact-subject" name="subject"
+                    maxlength="60" required
+                    aria-describedby="contact-subject-error">
                   <p class="field-error" id="contact-subject-error" hidden></p>
                 </div>
 
@@ -161,22 +124,14 @@
                   <label for="contact-message">Message <span class="required" aria-hidden="true">*</span></label>
                   <textarea
                     id="contact-message" name="message"
-                    maxlength="1000" required
-                    aria-describedby="contact-message-hint contact-message-error"
-                    placeholder="Tell us what you need. At least 10 characters."></textarea>
-                  <p class="field-hint" id="contact-message-hint">Between 10 and 1000 characters.</p>
+                    rows="4" maxlength="1000" required
+                    aria-describedby="contact-message-error"></textarea>
                   <p class="field-error" id="contact-message-error" hidden></p>
                 </div>
 
                 <div class="button-row">
                   <button class="btn btn-primary" type="submit">Send message</button>
-                  <button class="btn btn-outline" type="reset">Clear form</button>
                 </div>
-
-                <p class="field-hint mb-0">
-                  By sending you agree that this prototype stores your message
-                  in this browser for demonstration purposes only.
-                </p>
               </div>
             </form>
           </div>
@@ -188,52 +143,42 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cart &amp; Pickup — Lutong Lokal</title>
-  <meta name="description" content="Review your Lutong Lokal demo cart and place a demo pickup order.">
+  <title>Cart &amp; Pickup — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Review your THE UNKNOWN COFFEE cart and place a pickup order.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -54,7 +54,7 @@
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li><a href="menu.html">Food Menu</a></li>
+            <li><a href="menu.html">Coffee Menu</a></li>
             <li aria-current="page">Cart</li>
           </ol>
         </nav>
@@ -64,14 +64,6 @@
     </section>
 
     <section class="section">
-      <div class="container">
-        <div class="alert alert-info">
-          <p>
-            <strong>Demo cart.</strong> Your cart is stored in this browser only, so
-            you can close the page and come back to it. No payment is taken at
-            any point — this prototype does not process payments.
-          </p>
-        </div>
 
         <div class="alert alert-success" id="cart-status" role="status" aria-live="polite" hidden></div>
 
@@ -80,12 +72,11 @@
         <div class="empty-state" id="cart-empty">
           <h3>Your cart is empty</h3>
           <p>
-            Nothing has been added yet. Pick a few dishes from the food menu and
-            they will appear here, ready for you to adjust the quantities and
-            place a demo pickup order.
+            Nothing has been added yet. Pick a few drinks from the coffee menu and
+            they will appear here, ready for you to adjust the quantities and place your pickup order.
           </p>
           <div class="button-row">
-            <a class="btn btn-primary" href="menu.html">Browse the food menu</a>
+            <a class="btn btn-primary" href="menu.html">Browse the coffee menu</a>
             <a class="btn btn-outline" href="index.html">Back to home</a>
           </div>
         </div>
@@ -105,8 +96,8 @@
             <div class="form-card" style="margin-top: 1.5rem;">
               <h2>Pickup details</h2>
               <p class="text-muted">
-                Tell us who is collecting and when. All fields marked with an
-                asterisk are required.
+                Tell us who will collect the drinks and your preferred pickup time.
+                The mobile stall location can change, so confirm its current location before pickup.
               </p>
 
               <form id="order-form" novalidate>
@@ -128,7 +119,7 @@
                       autocomplete="email" maxlength="120" required
                       aria-describedby="order-email-hint order-email-error"
                       placeholder="e.g. maria@example.com">
-                    <p class="field-hint" id="order-email-hint">Used only to identify this demo order.</p>
+                    <p class="field-hint" id="order-email-hint">Used only to identify this order.</p>
                     <p class="field-error" id="order-email-error" hidden></p>
                   </div>
 
@@ -139,12 +130,12 @@
                       autocomplete="tel" maxlength="20"
                       aria-describedby="order-phone-hint order-phone-error"
                       placeholder="e.g. 0917 555 0142">
-                    <p class="field-hint" id="order-phone-hint">Optional. Only if you want the demo stall to call you.</p>
+                    <p class="field-hint" id="order-phone-hint">Optional. Only if you want the stall to call you.</p>
                     <p class="field-error" id="order-phone-error" hidden></p>
                   </div>
 
                   <div class="field">
-                    <label for="order-pickup-time">Pickup time <span class="required" aria-hidden="true">*</span></label>
+                    <label for="order-pickup-time">Preferred pickup time <span class="required" aria-hidden="true">*</span></label>
                     <select id="order-pickup-time" name="pickupTime" required aria-describedby="order-time-error">
                       <option value="">Please choose a pickup time</option>
                       <option value="As soon as possible">As soon as possible</option>
@@ -157,82 +148,71 @@
                   </div>
 
                   <div class="field">
-                    <label for="order-note">Note for the kitchen</label>
+                    <label for="order-note">Order Note (Optional)</label>
                     <textarea
                       id="order-note" name="pickupNote"
                       maxlength="400"
                       aria-describedby="order-note-hint order-note-error"
-                      placeholder="Optional. For example: extra rice, no chilli, please pack the lumpia separately."></textarea>
-                    <p class="field-hint" id="order-note-hint">Optional, up to 400 characters.</p>
+                      placeholder="e.g., less ice or less sugar, if available"></textarea>
+                    <p class="field-hint" id="order-note-hint">Add any special requests for your drink.</p>
                     <p class="field-error" id="order-note-error" hidden></p>
                   </div>
 
                   <div class="button-row">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Place demo pickup order</button>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Place pickup order</button>
                   </div>
 
                   <p class="field-hint mb-0">
                     Submitting places a demonstration order in this browser only.
-                    Nothing is charged, no kitchen is notified and no email is sent.
+                    Nothing is charged and no email is sent.
                   </p>
                 </div>
               </form>
             </div>
           </div>
         </div>
-      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

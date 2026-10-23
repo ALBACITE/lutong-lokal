@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lutong Lokal — Good food, less waiting.</title>
-  <meta name="description" content="Lutong Lokal is a classroom prototype of a Filipino carinderia ordering website. Browse the demo menu, build a cart and place a demo pickup order.">
+  <title>THE UNKNOWN COFFEE — Find Your Coffee, Made Easy.</title>
+  <meta name="description" content="THE UNKNOWN COFFEE — a mobile coffee stall in Davao City. Browse the menu, build your cart and place an order.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -49,60 +49,49 @@
   </header>
 
   <main id="main">
-    <!-- Hero -->
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <span class="hero-eyebrow">Carinderia-style Filipino comfort food</span>
-          <h1>Lutong Lokal</h1>
+          <span class="hero-eyebrow">Mobile coffee stall in Davao City</span>
+          <h1>THE UNKNOWN COFFEE</h1>
+          <p class="hero-lead">Find Your Coffee, Made Easy.</p>
           <p class="hero-lead">
-            Home-cooked ulam, pancit and puso that is cooked when you order it.
-            Browse the menu, build your cart, and collect your meal at the counter —
-            good food, less waiting.
+            Fresh coffee and non-coffee drinks prepared when you order.
+            Discover the menu, build your cart, and pick up your drink from the current stall location.
           </p>
           <div class="button-row">
-            <a class="btn btn-primary btn-lg" href="menu.html">Browse the food menu</a>
-            <a class="btn btn-outline btn-lg" href="#how-it-works">How pickup works</a>
-          </div>
-          <div class="demo-note">
-            <span aria-hidden="true">&#9432;</span>
-            <p>
-              <strong>This is an IT105 classroom prototype.</strong>
-              The stall, the menu items, the prices and all orders are demonstration data.
-              No real payment is taken and no food is actually being sold.
-            </p>
+            <a class="btn btn-primary btn-lg" href="menu.html">View Menu</a>
+            <a class="btn btn-outline btn-lg" href="cart.html">Order Now</a>
           </div>
         </div>
 
         <div class="hero-media">
           <img
-            src="https://commons.wikimedia.org/wiki/Special:FilePath/Busy%20Food%20Stall%20Counter.jpg?width=800"
-            alt="A busy food stall counter with prepared dishes lined up for serving"
+            src="assets/img/IMG_20261023_155423_323.jpg"
+            alt="THE UNKNOWN COFFEE mobile cart"
             width="800" height="533" decoding="async"
-            data-fallback-text="Busy food stall counter">
+            data-fallback-text="THE UNKNOWN COFFEE cart">
           <div class="card-fallback" hidden>
-            <span data-fallback-label>Busy food stall counter</span>
+            <span data-fallback-label>THE UNKNOWN COFFEE cart</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Why Lutong Lokal -->
     <section class="section-tight" aria-labelledby="why-heading">
       <div class="container">
         <div class="section-head">
           <h2 id="why-heading">Why people keep coming back</h2>
-          <p>Three simple promises that shape every plate we send out of the kitchen.</p>
+          <p>Simple, fresh drinks made for pickup and easy ordering.</p>
         </div>
 
         <div class="grid-3">
           <article class="card">
             <div class="card-body">
-              <span class="feature-icon" aria-hidden="true">&#127859;</span>
-              <h3 class="card-title">Cooked when you order</h3>
+              <span class="feature-icon" aria-hidden="true">&#9749;</span>
+              <h3 class="card-title">Made fresh</h3>
               <p class="card-text">
-                Nothing sits under a lamp. Your ulam is cooked after you order it,
-                so the sauce is still hot when you arrive.
+                Each drink is prepared after you place your order so it tastes fresh and ready to enjoy.
               </p>
             </div>
           </article>
@@ -110,10 +99,9 @@
           <article class="card">
             <div class="card-body">
               <span class="feature-icon" aria-hidden="true">&#9200;</span>
-              <h3 class="card-title">Ready in about 15 minutes</h3>
+              <h3 class="card-title">Quick pickup</h3>
               <p class="card-text">
-                Order, wait for the kitchen queue, then collect at the counter.
-                Good food, less waiting — that is the whole idea.
+                Order in advance, then grab your coffee when it is ready without the wait in line.
               </p>
             </div>
           </article>
@@ -121,10 +109,9 @@
           <article class="card">
             <div class="card-body">
               <span class="feature-icon" aria-hidden="true">&#128205;</span>
-              <h3 class="card-title">Pickup only</h3>
+              <h3 class="card-title">Current location info</h3>
               <p class="card-text">
-                No delivery fee and no rider waiting outside. Come and get your
-                order while it is still steaming.
+                The stall may move between locations, so the website helps customers check the latest updates.
               </p>
             </div>
           </article>
@@ -132,20 +119,18 @@
       </div>
     </section>
 
-    <!-- Signature dishes -->
     <section class="section section-tint" aria-labelledby="featured-heading">
       <div class="container">
         <div class="section-head">
-          <h2 id="featured-heading">Signature dishes</h2>
-          <p>A few of the plates that keep regulars coming back. All prices below are sample demo prices.</p>
+          <h2 id="featured-heading">Popular drinks</h2>
+          <p>Fresh favorites from our coffee and non-coffee menu.</p>
         </div>
 
         <div class="grid" id="featured-grid">
           <noscript>
             <p class="alert alert-info">
-              JavaScript is turned off, so the featured dishes cannot be listed here.
-              The full menu still works without JavaScript — open the
-              <a href="menu.html">Food Menu</a> page.
+              JavaScript is turned off, so featured drinks cannot be shown here.
+              Please open the <a href="menu.html">Coffee Menu</a> page for the full list.
             </p>
           </noscript>
         </div>
@@ -157,81 +142,71 @@
       </div>
     </section>
 
-    <!-- How it works -->
     <section class="section" id="how-it-works" aria-labelledby="how-heading">
       <div class="container">
         <div class="section-head">
           <h2 id="how-heading">How pickup works</h2>
-          <p>Three steps from browsing to collecting your meal.</p>
+          <p>Three easy steps from menu to coffee in hand.</p>
         </div>
 
         <ol class="steps">
           <li>
-            <h3>Browse and search</h3>
+            <h3>Browse the menu</h3>
             <p class="text-muted mb-0">
-              Use the search box to look for a dish by name, or filter by
-              category — ulam, noodles, rice and sides, snacks, sweets or drinks.
+              Explore the coffee flavors and non-coffee drinks, then choose your preferred size and add to cart.
             </p>
           </li>
           <li>
-            <h3>Build your cart</h3>
+            <h3>Build your order</h3>
             <p class="text-muted mb-0">
-              Add the dishes you want and adjust the quantity in your cart.
-              Sold-out dishes are blocked from being ordered.
+              Adjust quantities, review your total, and fill in your pickup details before placing the order.
             </p>
           </li>
           <li>
-            <h3>Place a demo order</h3>
+            <h3>Pick it up</h3>
             <p class="text-muted mb-0">
-              Leave your pickup details, submit the order and track its status —
-              Pending, Preparing, Ready for Pickup, then Completed.
+              Check the latest location and collect your order at the stall when it is ready.
             </p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- Visit band -->
     <section class="section section-tint" aria-labelledby="visit-heading">
       <div class="container split-layout">
         <div>
-          <h2 id="visit-heading">Visit the counter</h2>
+          <h2 id="visit-heading">Current stall details</h2>
           <p class="text-muted">
-            In this prototype the stall address below is a made-up demonstration
-            address. It is not a real business location.
+            The stall is mobile, so its exact location may change. Confirm the current stall location before pickup.
           </p>
           <dl class="info-rows">
             <div class="info-row">
-              <dt>Demo address</dt>
-              <dd>12 Maharlika Street, Barangay San Isidro (sample address)</dd>
+              <dt>Location</dt>
+              <dd>Davao City, Philippines</dd>
             </div>
             <div class="info-row">
-              <dt>Kitchen hours</dt>
-              <dd>Monday to Sunday, 10:00 AM to 9:00 PM</dd>
+              <dt>Business type</dt>
+              <dd>Mobile coffee stall with pickup orders</dd>
             </div>
             <div class="info-row">
-              <dt>Pickup counter</dt>
-              <dd>Window 2 — look for the orange sign</dd>
-            </div>
-            <div class="info-row">
-              <dt>Average wait</dt>
-              <dd>About 15 minutes for a demo order</dd>
+              <dt>Latest updates</dt>
+              <dd>Check the latest location shared by THE UNKNOWN COFFEE</dd>
             </div>
           </dl>
           <div class="button-row" style="margin-bottom: 0;">
-            <a class="btn btn-primary" href="contact.html">Contact the stall</a>
-            <a class="btn btn-outline" href="about.html">About Lutong Lokal</a>
+            <a class="btn btn-primary" href="contact.html">Contact us</a>
+            <a class="btn btn-outline" href="about.html">About the stall</a>
           </div>
         </div>
 
         <div class="media-block">
           <img
-            src="https://commons.wikimedia.org/wiki/Special:FilePath/Dynamite%20lumpia%20(Dinamita)%20at%20a%20street%20food%20stall%20(Philippines)%2001.jpg?width=640"
-            alt="Dynamite lumpia being prepared at a street food stall in the Philippines"
+            src="assets/img/IMG_20261023_155454_862.jpg"
+            alt="THE UNKNOWN COFFEE stall setup and menu board"
             width="640" height="533" loading="lazy" decoding="async"
-            data-fallback-text="Dynamite lumpia at a street food stall">
+            data-fallback-text="THE UNKNOWN COFFEE stall">
           <div class="card-fallback" hidden>
-            <span data-fallback-label>Dynamite lumpia at a street food stall</span>
+            <span data-fallback-label>THE UNKNOWN COFFEE stall</span>
           </div>
         </div>
       </div>
@@ -241,52 +216,42 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks, easy ordering, and pickup details for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

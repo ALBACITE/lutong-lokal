@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/contact.js
+   THE UNKNOWN COFFEE — assets/js/contact.js
    Validation and handling for the Contact page form.
 
    IMPORTANT: this prototype has no mail server and no email service. The
@@ -12,7 +12,7 @@
 
   var SUBJECT_OPTIONS = [
     "General enquiry",
-    "Feedback about a meal",
+    "Feedback about a drink",
     "Large order enquiry",
     "Report a problem"
   ];

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — IT105 Web Development Prototype
+   THE UNKNOWN COFFEE — IT105 Web Development Prototype
    Shared stylesheet for every page.
 
    Table of contents
@@ -19,23 +19,23 @@
    1. Design tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Brand colours — warm, home-cooking palette */
-  --brand-900: #3A1C0B;
-  --brand-800: #5A2A12;
-  --brand-700: #7A2E0E;
-  --brand-600: #9C3A12;   /* primary button background */
-  --brand-500: #B84A17;
-  --brand-100: #F7DFD0;
-  --brand-050: #FFF4EC;   /* page tint */
+  /* Brand colours — black, white, coffee brown */
+  --brand-900: #241914;   /* deep espresso */
+  --brand-800: #4B2E24;   /* dark coffee brown */
+  --brand-700: #8B5E3C;   /* medium coffee brown */
+  --brand-600: #8B5E3C;   /* primary button background */
+  --brand-500: #8B5E3C;
+  --brand-100: #E9DDD1;   /* light beige */
+  --brand-050: #FAF7F2;   /* warm off-white */
 
   /* Neutral colours */
-  --ink: #33302E;        /* body text */
-  --ink-muted: #5C554E;  /* secondary text */
+  --ink: #241914;        /* body text */
+  --ink-muted: #4B2E24;  /* secondary text */
   --surface: #FFFFFF;
-  --surface-alt: #FBF6F1;
-  --page-bg: #FDF8F3;
-  --border: #E4D9CC;
-  --border-strong: #CBBBA8;
+  --surface-alt: #FAF7F2;
+  --page-bg: #FAF7F2;
+  --border: #E9DDD1;
+  --border-strong: #8B5E3C;
 
   /* Semantic colours */
   --success-bg: #E7F6EC;
@@ -52,9 +52,9 @@
   --info-text: #1E3A8A;
 
   /* Admin area accent (kept visually separate from user features) */
-  --admin-bg: #FEF3C7;
-  --admin-border: #D89B12;
-  --admin-text: #78350F;
+  --admin-bg: #FAF7F2;
+  --admin-border: #8B5E3C;
+  --admin-text: #241914;
 
   /* Spacing scale (4px base) */
   --space-1: 0.25rem;
@@ -1288,6 +1288,36 @@ table.data-table {
   margin-bottom: var(--space-4);
 }
 
+.menu-results {
+  display: block;
+}
+
+.menu-category {
+  margin-bottom: var(--space-6);
+}
+
+.menu-category > h2 {
+  margin-bottom: var(--space-4);
+}
+
+.drink-purchase {
+  flex: 1 1 100%;
+}
+
+.drink-purchase select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+
+.menu-category .card-footer {
+  align-items: stretch;
+}
+
 .result-count strong { color: var(--brand-900); }
 
 .add-to-cart-btn[disabled],
@@ -1559,6 +1589,13 @@ table.data-table {
   h1 { font-size: 1.9rem; }
   .card-footer { flex-direction: column; align-items: stretch; }
   .card-footer .btn { width: 100%; }
+.size-select { padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); font: inherit; font-size: 0.85rem; }
+.menu-photo { margin-bottom: var(--space-5); text-align: center; }
+.menu-photo img { max-width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+.payment-options { display: flex; flex-direction: column; gap: var(--space-2); }
+.payment-option { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; }
+.payment-option:hover { background: var(--surface-alt); }
+.payment-option input { margin: 0; }
   .button-row .btn { flex: 1 1 auto; }
   .form-card { padding: var(--space-4); }
 }

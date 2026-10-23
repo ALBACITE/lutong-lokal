@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>User Dashboard — Lutong Lokal</title>
-  <meta name="description" content="Your demo orders and their status on the Lutong Lokal prototype.">
+  <title>User Dashboard — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="See your customer dashboard, orders, and pickup status for THE UNKNOWN COFFEE.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -16,8 +16,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -29,7 +29,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -58,34 +58,25 @@
           </ol>
         </nav>
         <h1>Your dashboard</h1>
-        <p>Your demo orders, their status and where you left off.</p>
+        <p>Your orders, their status, and where you left off.</p>
       </div>
     </section>
 
     <section class="section">
-      <div class="container">
-        <div class="alert alert-warning">
-          <p>
-            <strong>This dashboard is not protected.</strong>
-            It runs entirely in your browser, so opening the page directly does
-            not prove who you are. It is a simulation of a customer area for the
-            classroom prototype, not a secure sign-in.
-          </p>
-        </div>
 
         <!-- Shown when nobody is signed in on this device. -->
         <div id="dashboard-signed-out" class="empty-state">
           <h3>You are not signed in</h3>
           <p>
-            Sign in with a demo account to see the orders saved under that
-            account. You can also place a pickup order as a guest — the order
-            will still be listed here on this device.
+            Sign in to view orders saved under your account. Guest pickup orders placed on this device are listed below.
           </p>
           <div class="button-row">
-            <a class="btn btn-primary" href="login.html">Sign in to the demo site</a>
-            <a class="btn btn-outline" href="register.html">Create a demo account</a>
-            <a class="btn btn-outline" href="menu.html">Browse the food menu</a>
+            <a class="btn btn-primary" href="login.html">Sign in</a>
+            <a class="btn btn-outline" href="register.html">Create an account</a>
+            <a class="btn btn-outline" href="menu.html">Browse the coffee menu</a>
           </div>
+          <h3 style="margin-top: 1.5rem;">Guest orders on this device</h3>
+          <div id="dashboard-guest-orders" class="dashboard-orders"></div>
         </div>
 
         <!-- Shown when a demo session exists. -->
@@ -94,20 +85,18 @@
 
           <div class="split-layout">
             <div>
-              <h2>Your demo orders</h2>
+              <h2>Your orders</h2>
               <p class="text-muted">
-                Every pickup order you placed on this device, newest first. The
-                stall owner updates the status from the admin demo area.
+                Every pickup order you placed on this device, newest first. Staff can update the status from the admin area.
               </p>
               <div id="dashboard-orders" class="dashboard-orders"></div>
             </div>
 
             <div>
               <div class="form-card">
-                <h2>Your demo account</h2>
+                <h2>Your account</h2>
                 <p class="text-muted">
-                  These are the details this prototype keeps about you. They live
-                  in your browser only.
+                  These are the details saved for your account on this device.
                 </p>
 
                 <dl class="info-rows">
@@ -134,74 +123,56 @@
                 </dl>
 
                 <div class="button-row" style="margin-bottom: 0;">
-                  <a class="btn btn-primary" href="menu.html">Order food</a>
+                  <a class="btn btn-primary" href="menu.html">Order a drink</a>
                   <button class="btn btn-outline" type="button" data-sign-out>Sign out</button>
                 </div>
               </div>
 
-              <div class="demo-note">
-                <p>
-                  <strong>Remember:</strong> this is a simulation. No password was
-                  collected and no real account was created anywhere outside your
-                  browser.
-                </p>
-              </div>
             </div>
           </div>
         </div>
-      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

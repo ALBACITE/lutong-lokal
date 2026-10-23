@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Demo Area — Lutong Lokal</title>
-  <meta name="description" content="Demo administrator area for the Lutong Lokal prototype: manage menu items, availability and demo orders.">
+  <title>Admin Area — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Administrator area for THE UNKNOWN COFFEE: manage menu items, availability and orders.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -15,7 +15,7 @@
     <div class="container">
       <span>
         <span class="badge badge-admin">ADMIN DEMO AREA</span>
-        <strong>Admin demo area.</strong>
+        <strong>Admin area.</strong>
         This page is for the demo stall owner. It is kept separate from the
         customer area on purpose.
       </span>
@@ -28,8 +28,8 @@
       <a class="brand" href="index.html">
         <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
         <span class="brand-text">
-          <strong>Lutong Lokal</strong>
-          <small>Good food, less waiting.</small>
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
         </span>
       </a>
 
@@ -41,7 +41,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -66,11 +66,11 @@
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li aria-current="page">Admin demo area</li>
+            <li aria-current="page">Admin area</li>
           </ol>
         </nav>
-        <h1>Admin demo area</h1>
-        <p>Manage the demo menu, dish availability and the demo orders that come in.</p>
+        <h1>Admin area</h1>
+        <p>Manage drink availability and the pickup orders saved in this browser.</p>
       </div>
     </section>
 
@@ -79,24 +79,18 @@
         <div class="alert alert-warning">
           <p>
             <strong>Opening this page does not grant you access.</strong>
-            The administrator check in this prototype happens in your browser, so
-            anybody can open the page or edit browser storage to get past it.
-            That is exactly why it is a demonstration and not real security —
-            a real system would enforce this on a trusted server.
+            Staff access is controlled in the browser for this static demo and is intended only for local testing.
           </p>
         </div>
 
         <!-- Shown when the visitor is not signed in as the demo administrator. -->
         <div id="admin-denied" class="empty-state">
-          <h3>Sign in as the demo administrator</h3>
+          <h3>Sign in as administrator</h3>
           <p>
-            Use the public demo administrator account to open the admin tools:
-            <span class="mono">admin</span> /
-            <span class="mono">admin@lutonglokal.test</span> with the demo
-            passcode <span class="mono">admin123</span>.
+            Sign in with your administrator account to open the admin tools and manage orders, availability, and menu updates.
           </p>
           <div class="button-row">
-            <a class="btn btn-admin" href="login.html">Sign in as the demo administrator</a>
+            <a class="btn btn-admin" href="login.html">Sign in as administrator</a>
             <a class="btn btn-outline" href="dashboard.html">Back to the customer dashboard</a>
           </div>
         </div>
@@ -105,15 +99,14 @@
         <div id="admin-content" hidden>
           <div class="alert alert-success" id="admin-status" role="status" aria-live="polite" hidden></div>
 
-          <h2>Demo orders</h2>
+          <h2>Orders</h2>
           <p class="text-muted">
-            Pickups that came in on this device. Change a status to move an order
-            along — the customer dashboard picks the change up straight away.
+            Pickups received on this device. Update a status to move an order along and the customer dashboard will reflect the change.
           </p>
 
           <div class="table-wrap">
             <table class="data-table" id="admin-orders-table">
-              <caption>All demo orders, newest first</caption>
+              <caption>All orders, newest first</caption>
               <thead>
                 <tr>
                   <th scope="col">Order</th>
@@ -129,25 +122,24 @@
           </div>
           <p class="text-muted">
             <span class="badge badge-category" id="order-count">0</span>
-            demo order(s) on this device.
+            order(s) on this device.
           </p>
 
-          <h2>Demo menu</h2>
+          <h2>Menu</h2>
           <p class="text-muted">
-            Add a dish, edit its details, mark it sold out, or take it off the
-            menu. Changes apply to the food menu page straight away.
+            Add a drink, edit its details, mark it unavailable, or remove it from the menu. Changes apply to the coffee menu page straight away.
           </p>
 
           <div class="split-layout">
             <div>
               <div class="table-wrap">
                 <table class="data-table" id="admin-menu-table">
-                  <caption>Demo menu items</caption>
+                  <caption>Menu items</caption>
                   <thead>
                     <tr>
-                      <th scope="col">Dish</th>
+                      <th scope="col">Drink</th>
                       <th scope="col">Category</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">Medium / Large</th>
                       <th scope="col">Availability</th>
                       <th scope="col">Actions</th>
                     </tr>
@@ -157,7 +149,7 @@
               </div>
               <p class="text-muted">
                 <span class="badge badge-category" id="menu-item-count">0</span>
-                dish(es) on the demo menu.
+                drink(s) on the menu.
               </p>
             </div>
 
@@ -169,7 +161,7 @@
                 <form id="menu-form" novalidate>
                   <div class="form-grid">
                     <div class="field">
-                      <label for="menu-item-name">Dish name <span class="required" aria-hidden="true">*</span></label>
+                      <label for="menu-item-name">Drink name <span class="required" aria-hidden="true">*</span></label>
                       <input
                         type="text" id="menu-item-name" name="name"
                         maxlength="80" required
@@ -187,24 +179,29 @@
                     </div>
 
                     <div class="field">
-                      <label for="menu-item-price">Price (₱) <span class="required" aria-hidden="true">*</span></label>
+                      <label for="menu-item-price-medium">Medium price (₱) <span class="required" aria-hidden="true">*</span></label>
                       <input
-                        type="number" id="menu-item-price" name="price"
+                        type="number" id="menu-item-price-medium" name="priceMedium"
                         min="0" max="100000" step="1" required
-                        aria-describedby="menu-item-price-error">
-                      <p class="field-error" id="menu-item-price-error" hidden></p>
+                        aria-describedby="menu-item-price-medium-error">
+                      <p class="field-error" id="menu-item-price-medium-error" hidden></p>
+                    </div>
+
+                    <div class="field">
+                      <label for="menu-item-price-large">Large price (₱) <span class="required" aria-hidden="true">*</span></label>
+                      <input
+                        type="number" id="menu-item-price-large" name="priceLarge"
+                        min="0" max="100000" step="1" required
+                        aria-describedby="menu-item-price-large-error">
+                      <p class="field-error" id="menu-item-price-large-error" hidden></p>
                     </div>
 
                     <div class="field">
                       <label for="menu-item-category">Category <span class="required" aria-hidden="true">*</span></label>
                       <select id="menu-item-category" name="category" required aria-describedby="menu-item-category-error">
                         <option value="">Choose a category</option>
-                        <option value="main-dish">Mga Ulam</option>
-                        <option value="noodles">Noodles &amp; Palabok</option>
-                        <option value="rice-sides">Rice &amp; Sides</option>
-                        <option value="snacks">Snacks</option>
-                        <option value="sweets">Sweets (Puso)</option>
-                        <option value="drinks">Drinks</option>
+                        <option value="coffee">Coffee</option>
+                        <option value="non-coffee">Non-Coffee</option>
                       </select>
                       <p class="field-error" id="menu-item-category-error" hidden></p>
                     </div>
@@ -249,52 +246,42 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <h2>Lutong Lokal</h2>
-        <p>Good food, less waiting.</p>
-        <p>
-          A web development prototype built for the IT105 course.
-          Every meal, price, order and account on this site is demonstration data.
-        </p>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
       </div>
 
       <div>
         <h3>Pages</h3>
         <ul class="footer-list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="menu.html">Food Menu</a></li>
-          <li><a href="cart.html">Cart &amp; pickup</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
 
       <div>
-        <h3>Your account</h3>
+        <h3>Account</h3>
         <ul class="footer-list">
-          <li><a href="login.html">Sign in (demo)</a></li>
-          <li><a href="register.html">Register (demo)</a></li>
-          <li><a href="dashboard.html">User dashboard</a></li>
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
         </ul>
       </div>
 
       <div>
         <h3>Staff</h3>
         <ul class="footer-list">
-          <li><a href="admin.html">Admin demo area</a></li>
+          <li><a href="admin.html">Admin area</a></li>
         </ul>
-        <p style="margin-top: 1rem;">
-          <span class="badge badge-soldout">Demo area</span>
-        </p>
       </div>
     </div>
 
     <div class="container footer-bottom">
-      <p>
-        Prototype for IT105 Web Development. Menu data, orders, accounts and messages
-        are stored only in this browser. Photos are from Wikimedia Commons under
-        Creative Commons licences — full credits are in the README.
-      </p>
-      <p>&copy; <span data-current-year>2026</span> Lutong Lokal prototype. Not a real business.</p>
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
     </div>
   </footer>
 

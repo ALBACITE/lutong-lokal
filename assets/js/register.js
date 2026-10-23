@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Lutong Lokal — assets/js/register.js
+   THE UNKNOWN COFFEE — assets/js/register.js
    Handles the demo registration form on register.html.
 
    Registration always creates a CUSTOMER account. There is no role field
@@ -84,7 +84,7 @@
 
     LutongUI.setStatus(
       statusBox,
-      "Your demo customer account is ready, " + result.user.displayName + ". Taking you to your dashboard...",
+      "Your account is ready, " + result.user.displayName + ". Taking you to your dashboard...",
       "success"
     );
 
