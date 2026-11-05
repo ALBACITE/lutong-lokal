@@ -20,11 +20,45 @@
   var ordersTable = null;
   var messagesBox = null;
   var statusBox = null;
+  var warningBox = null;
   var form = null;
   var editingId = null;
 
   function byId(id) {
     return document.getElementById(id);
+  }
+
+  function updateSummary() {
+    var orders = LutongOrders.getAll();
+    var menu = lutongGetMenu();
+    var activeOrders = 0;
+    var availableItems = 0;
+
+    for (var i = 0; i < orders.length; i += 1) {
+      if (orders[i].status !== "Completed" && orders[i].status !== "Cancelled") {
+        activeOrders += 1;
+      }
+    }
+
+    for (var j = 0; j < menu.length; j += 1) {
+      if (menu[j].available) {
+        availableItems += 1;
+      }
+    }
+
+    var values = [
+      { id: "admin-stat-orders", value: orders.length },
+      { id: "admin-stat-active", value: activeOrders },
+      { id: "admin-stat-menu", value: menu.length },
+      { id: "admin-stat-available", value: availableItems }
+    ];
+
+    for (var k = 0; k < values.length; k += 1) {
+      var node = byId(values[k].id);
+      if (node) {
+        node.textContent = String(values[k].value);
+      }
+    }
   }
 
   /* ------------------------------------------------------------------
@@ -111,6 +145,7 @@
     if (countNode) {
       countNode.textContent = String(menu.length);
     }
+    updateSummary();
   }
 
   /* ------------------------------------------------------------------
@@ -212,6 +247,7 @@
       if (countNode) {
         countNode.textContent = "0";
       }
+      updateSummary();
       return;
     }
 
@@ -223,6 +259,7 @@
     if (countNode2) {
       countNode2.textContent = String(orders.length);
     }
+    updateSummary();
   }
 
   /* ------------------------------------------------------------------
@@ -685,9 +722,13 @@
     ordersTable = byId("admin-orders-table");
     messagesBox = byId("admin-messages");
     statusBox = byId("admin-status");
+    warningBox = byId("admin-warning");
     form = byId("menu-form");
 
     var session = LutongAuth.getSession();
+    if (warningBox) {
+      warningBox.hidden = !!session && LutongAuth.isAdmin(session);
+    }
 
     if (!session || !LutongAuth.isAdmin(session)) {
       if (deniedBox) {

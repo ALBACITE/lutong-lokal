@@ -290,23 +290,23 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   Write-Host "`n=== 5. Home page renders menu data from storage ===" -ForegroundColor Cyan
   Open-Page "index.html"
   $cards = Evaluate $ws $idHolder "document.querySelectorAll('#featured-grid .card').length"
-  if ($cards -ge 1) { Pass "Home page rendered $cards featured dish cards from the menu data" }
-  else { Fail "Home page rendered no featured dish cards" }
+  if ($cards -ge 1) { Pass "Home page rendered $cards featured drink cards from the menu data" }
+  else { Fail "Home page rendered no featured drink cards" }
 
   $storedMenu = Evaluate $ws $idHolder "JSON.stringify((JSON.parse(localStorage.getItem('lutonglokal.menu.v1')||'[]')).length)"
-  if ($storedMenu -eq "18") { Pass "Menu seeded 18 demo items into local storage" }
-  else { Fail "Expected 18 seeded menu items but found $storedMenu" }
+  if ($storedMenu -eq "10") { Pass "Menu seeded all 10 supplied drinks into local storage" }
+  else { Fail "Expected 10 supplied drinks but found $storedMenu" }
 
   # -------------------------------------------------------------------------
-  Write-Host "`n=== 6. Menu page lists every seeded dish ===" -ForegroundColor Cyan
+  Write-Host "`n=== 6. Menu page lists every supplied drink ===" -ForegroundColor Cyan
   Open-Page "menu.html"
   $menuCards = Evaluate $ws $idHolder "document.querySelectorAll('#menu-grid .card').length"
-  if ($menuCards -eq 18) { Pass "Menu page lists all 18 dishes" }
-  else { Fail "Menu page lists $menuCards dishes (expected 18)" }
+  if ($menuCards -eq 10) { Pass "Menu page lists all 10 drinks" }
+  else { Fail "Menu page lists $menuCards drinks (expected 10)" }
 
   $soldOut = Evaluate $ws $idHolder "document.querySelectorAll('#menu-grid .badge-soldout').length"
-  if ($soldOut -eq 2) { Pass "Menu page marks 2 dishes as sold out" }
-  else { Fail "Menu page marks $soldOut dishes as sold out (expected 2)" }
+  if ($soldOut -eq 0) { Pass "All 10 supplied drinks are available" }
+  else { Fail "Menu page unexpectedly marks $soldOut drinks as sold out" }
 
   # -------------------------------------------------------------------------
   Write-Host "`n=== 7. Reloading a page does not break it ===" -ForegroundColor Cyan
@@ -315,7 +315,7 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   $afterReload = Evaluate $ws $idHolder "document.querySelectorAll('#menu-grid .card').length"
   $reloadErrors = Evaluate $ws $idHolder "JSON.stringify(window.__llErrors || [])"
   $reloadParsed = $reloadErrors | ConvertFrom-Json
-  if ($afterReload -eq 18 -and $reloadParsed.Count -eq 0) { Pass "Reloading the menu page twice still works with no errors" }
+  if ($afterReload -eq 10 -and $reloadParsed.Count -eq 0) { Pass "Reloading the menu page twice still works with no errors" }
   else { Fail "Reload problem: $afterReload cards, errors: $($reloadParsed -join ' | ')" }
 
   # -------------------------------------------------------------------------
@@ -335,8 +335,8 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   $corruptCards = Evaluate $ws $idHolder "document.querySelectorAll('#menu-grid .card').length"
   if ($corruptParsed.Count -eq 0) { Pass "Corrupt stored data does not throw any errors" }
   else { Fail "Corrupt stored data produced errors: $($corruptParsed -join ' | ')" }
-  if ($corruptCards -eq 18) { Pass "Menu page rebuilt the menu from seed data after corruption" }
-  else { Fail "Menu page shows $corruptCards cards after corruption (expected 18)" }
+  if ($corruptCards -eq 10) { Pass "Menu page rebuilt the menu from seed data after corruption" }
+  else { Fail "Menu page shows $corruptCards cards after corruption (expected 10)" }
 
   # -------------------------------------------------------------------------
   Write-Host "`n=== 9. Screenshots at phone and desktop widths ===" -ForegroundColor Cyan
@@ -367,16 +367,16 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   # -------------------------------------------------------------------------
   Write-Host "`n=== 10. Admin page keeps staff features visually separate ===" -ForegroundColor Cyan
   Open-Page "admin.html"
-  $banner = Evaluate $ws $idHolder "(function(){var b=document.querySelector('.admin-banner');return b ? b.textContent.indexOf('Admin demo area') !== -1 : false;})()"
-  if ($banner -eq $true) { Pass "Admin page shows the admin demo banner" }
-  else { Fail "Admin page is missing the admin demo banner" }
+  $banner = Evaluate $ws $idHolder "(function(){var b=document.querySelector('.alert-warning');return b ? b.textContent.indexOf('Staff access is controlled in the browser') !== -1 : false;})()"
+  if ($banner -eq $true) { Pass "Admin page explains that staff access is browser-local" }
+  else { Fail "Admin page is missing its staff-access limitation notice" }
   $warn = Evaluate $ws $idHolder "(function(){var a=document.querySelector('.alert-warning');return a ? a.textContent.indexOf('does not grant you access') !== -1 : false;})()"
   if ($warn -eq $true) { Pass "Admin page warns that opening it does not grant access" }
   else { Fail "Admin page is missing the 'does not grant access' warning" }
 
   Open-Page "index.html"
   $noBanner = Evaluate $ws $idHolder "document.querySelectorAll('.admin-banner').length"
-  if ($noBanner -eq 0) { Pass "Customer pages do not show the admin banner" }
+  if ($noBanner -eq 0) { Pass "Customer pages do not show an admin banner" }
   else { Fail "Customer pages show the admin banner" }
 
   # -------------------------------------------------------------------------
@@ -437,8 +437,8 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
     else { Fail "$page : $($stats.pending) photo(s) never finished loading" }
     if ($stats.noAlt -eq 0) { Pass "$page : every photo has an alt attribute" }
     else { Fail "$page : $($stats.noAlt) photo(s) missing alt text" }
-    if ($stats.loaded -gt 0) { Pass "$page : $($stats.loaded) remote photo(s) actually rendered" }
-    else { Fail "$page : no remote photo rendered" }
+    if ($stats.loaded -gt 0) { Pass "$page : $($stats.loaded) local or remote photo(s) actually rendered" }
+    else { Fail "$page : no photo rendered" }
   }
 
   # -------------------------------------------------------------------------
@@ -525,6 +525,197 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
 '@
   if ($narrowCols -eq 1) { Pass "Menu grid collapses to 1 column at 390px" }
   else { Fail "Menu grid shows $narrowCols columns at 390px (expected 1)" }
+
+  # -------------------------------------------------------------------------
+  Write-Host "`n=== 15. The coffee menu, cart sizes, and pickup order stay connected ===" -ForegroundColor Cyan
+  $null = Invoke-Cdp $ws $idHolder "Emulation.setDeviceMetricsOverride" @{ width = 1440; height = 900; deviceScaleFactor = 1; mobile = $false }
+  Open-Page "menu.html"
+  Evaluate $ws $idHolder "localStorage.clear(); sessionStorage.clear(); 'cleared'" | Out-Null
+  Open-Page "menu.html"
+
+  $menuData = Evaluate $ws $idHolder @'
+(function () {
+  var menu = lutongGetMenu();
+  var expected = [
+    ['Caramel Macchiato', 'coffee', 39, 49],
+    ['Spanish Latte', 'coffee', 39, 49],
+    ['Strawberry Latte', 'coffee', 49, 59],
+    ['Matcha Latte', 'coffee', 49, 59],
+    ['Cappuccino', 'coffee', 49, 59],
+    ['Taro', 'non-coffee', 49, 59],
+    ['Creamy Matcha', 'non-coffee', 49, 59],
+    ['Creamy Strawberry', 'non-coffee', 49, 59],
+    ['Matcha Strawberry', 'non-coffee', 49, 59],
+    ['Dark Choco', 'non-coffee', 49, 59]
+  ];
+  var actual = menu.map(function (item) {
+    return [item.name, item.category, item.priceMedium, item.priceLarge];
+  });
+  return JSON.stringify({
+    matches: JSON.stringify(actual) === JSON.stringify(expected),
+    count: menu.length,
+    groups: Array.prototype.map.call(document.querySelectorAll('#menu-grid > .menu-category'), function (section) {
+      return { name: section.querySelector('h2').textContent, count: section.querySelectorAll('.card').length };
+    })
+  });
+})();
+'@
+  $menuDataResult = $menuData | ConvertFrom-Json
+  if ($menuDataResult.matches -eq $true -and $menuDataResult.count -eq 10) {
+    Pass "All 10 drinks have the specified category and Medium/Large prices"
+  } else {
+    Fail "Menu data did not match the supplied ten drinks and prices"
+  }
+  if ($menuDataResult.groups.Count -eq 2 -and $menuDataResult.groups[0].name -eq "Coffee" -and $menuDataResult.groups[0].count -eq 5 -and $menuDataResult.groups[1].name -eq "Non-Coffee" -and $menuDataResult.groups[1].count -eq 5) {
+    Pass "Menu cards are grouped into Coffee (5) and Non-Coffee (5)"
+  } else {
+    Fail "Menu category grouping was not Coffee (5) and Non-Coffee (5)"
+  }
+
+  $imageEvidence = Evaluate $ws $idHolder @'
+(function () {
+  var images = Array.prototype.slice.call(document.querySelectorAll('#menu-grid img.card-img'));
+  images.forEach(function (image) { image.loading = 'eager'; });
+  return images.length;
+})();
+'@
+  Start-Sleep -Milliseconds 1500
+  $imageResult = Evaluate $ws $idHolder @'
+(function () {
+  var images = Array.prototype.slice.call(document.querySelectorAll('#menu-grid img.card-img'));
+  return JSON.stringify({
+    count: images.length,
+    loaded: images.filter(function (image) { return image.complete && image.naturalWidth > 0; }).length,
+    paths: images.map(function (image) { return image.getAttribute('src'); })
+  });
+})();
+'@
+  $images = $imageResult | ConvertFrom-Json
+  if ($images.count -eq 10 -and $images.loaded -eq 10) { Pass "All 10 individual drink crops load with working paths" }
+  else { Fail "Only $($images.loaded) of $($images.count) drink crops loaded" }
+
+  $added = Evaluate $ws $idHolder @'
+(function () {
+  var card = document.getElementById('item-c01');
+  var size = card.querySelector('[data-size-select]');
+  var button = card.querySelector('[data-add-item]');
+  size.value = 'medium';
+  button.click();
+  size.value = 'large';
+  button.click();
+  return JSON.stringify(lutongGetCart().map(function (line) {
+    return { name: line.name, size: line.size, price: line.price, quantity: line.quantity };
+  }));
+})();
+'@
+  $addedResult = $added | ConvertFrom-Json
+  if ($addedResult.Count -eq 2 -and $addedResult[0].size -eq "medium" -and $addedResult[0].price -eq 39 -and $addedResult[1].size -eq "large" -and $addedResult[1].price -eq 49) {
+    Pass "Adding Medium and Large Caramel Macchiato stores the correct variants and prices"
+  } else {
+    Fail "Medium/Large cart variants were not saved with the correct prices"
+  }
+
+  Open-Page "cart.html"
+  $cartEvidence = Evaluate $ws $idHolder @'
+(function () {
+  var note = document.getElementById('order-note');
+  var summary = document.querySelector('#cart-summary .summary-row.total');
+  return JSON.stringify({
+    lines: Array.prototype.map.call(document.querySelectorAll('#cart-lines .cart-line'), function (line) {
+      return line.querySelector('.cart-line-name').textContent;
+    }),
+    total: summary ? summary.textContent : '',
+    noteOptional: !note.required,
+    noteMax: note.maxLength,
+    noteLabel: document.querySelector('label[for="order-note"]').textContent.trim(),
+    noteHint: document.getElementById('order-note-hint').textContent.trim(),
+    notePlaceholder: note.placeholder
+  });
+})();
+'@
+  $cartResult = $cartEvidence | ConvertFrom-Json
+  if ($cartResult.lines.Count -eq 2 -and $cartResult.lines[0] -like "*Medium" -and $cartResult.lines[1] -like "*Large" -and $cartResult.total -like "*88.00*") {
+    Pass "Cart displays both sizes and totals ₱88.00"
+  } else {
+    Fail "Cart variant lines or total are incorrect: $($cartResult.total)"
+  }
+  if ($cartResult.noteOptional -eq $true -and $cartResult.noteMax -eq 400 -and $cartResult.noteLabel -eq "Order Note (Optional)" -and $cartResult.noteHint -eq "Add any special requests for your drink." -and $cartResult.notePlaceholder -eq "e.g., less ice or less sugar, if available") {
+    Pass "Order note is optional, capped at 400, and uses the requested drink wording"
+  } else {
+    Fail "Order note field does not match the requested label, help, example, or limit"
+  }
+
+  $placed = Evaluate $ws $idHolder @'
+(function () {
+  document.getElementById('order-name').value = 'Maria Santos';
+  document.getElementById('order-email').value = 'maria@example.com';
+  document.getElementById('order-phone').value = '09175550142';
+  document.getElementById('order-pickup-time').value = 'In about 30 minutes';
+  document.getElementById('order-note').value = 'Less ice, please.';
+  document.getElementById('order-form').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+  var order = JSON.parse(localStorage.getItem('lutonglokal.orders.v1') || '[]')[0];
+  return JSON.stringify({
+    order: order,
+    cartCount: lutongGetCart().length,
+    success: document.getElementById('order-success').textContent
+  });
+})();
+'@
+  $placedResult = $placed | ConvertFrom-Json
+  if ($placedResult.order.total -eq 88 -and $placedResult.order.items.Count -eq 2 -and $placedResult.order.items[0].size -eq "medium" -and $placedResult.order.items[1].size -eq "large") {
+    Pass "Order submission preserves both drink sizes and the ₱88 total"
+  } else {
+    Fail "Submitted order did not preserve its selected variants and total"
+  }
+  if ($placedResult.order.pickupNote -eq "Less ice, please." -and $placedResult.order.pickupTime -eq "In about 30 minutes" -and $placedResult.order.phone -eq "09175550142" -and $placedResult.order.contactEmail -eq "maria@example.com" -and $placedResult.cartCount -eq 0) {
+    Pass "Pickup time, customer details, note, and cart-clearing behavior are saved"
+  } else {
+    Fail "Pickup details/note were not saved correctly or the cart was not cleared"
+  }
+
+  Open-Page "dashboard.html"
+  $dashboardOrder = Evaluate $ws $idHolder "document.getElementById('dashboard-guest-orders').textContent"
+  if ($dashboardOrder -like "*Medium*" -and $dashboardOrder -like "*Large*" -and $dashboardOrder -like "*Less ice, please.*" -and $dashboardOrder -like "*In about 30 minutes*") {
+    Pass "Customer dashboard shows drink sizes, note, and pickup time"
+  } else {
+    Fail "Customer dashboard omitted order sizes or pickup details"
+  }
+
+  Evaluate $ws $idHolder @'
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'admin', displayName: 'Demo Administrator', email: 'admin@lutonglokal.test',
+  role: 'admin', loginAt: new Date().toISOString(), isNew: false
+}));
+'@ | Out-Null
+  Open-Page "admin.html"
+  $adminOrder = Evaluate $ws $idHolder "document.querySelector('#admin-orders-table tbody tr[data-order-row]').textContent"
+  if ($adminOrder -like "*Medium*" -and $adminOrder -like "*Large*" -and $adminOrder -like "*Less ice, please.*" -and $adminOrder -like "*In about 30 minutes*") {
+    Pass "Admin order management shows drink sizes, note, and pickup time"
+  } else {
+    Fail "Admin order management omitted order sizes or pickup details"
+  }
+
+  Open-Page "index.html"
+  $recommendations = Evaluate $ws $idHolder @'
+(function () {
+  var menu = lutongGetMenu();
+  var links = Array.prototype.slice.call(document.querySelectorAll('#featured-grid a[href^="menu.html#item-"]'));
+  return JSON.stringify({
+    count: links.length,
+    valid: links.length > 0 && links.every(function (link) {
+      var id = link.getAttribute('href').split('#item-')[1];
+      return menu.some(function (item) { return item.id === id; });
+    }),
+    names: Array.prototype.map.call(document.querySelectorAll('#featured-grid .card-title'), function (title) { return title.textContent; })
+  });
+})();
+'@
+  $recommendationResult = $recommendations | ConvertFrom-Json
+  if ($recommendationResult.valid -eq $true -and $recommendationResult.count -gt 0) {
+    Pass "Homepage recommendations link to products in the shared menu data"
+  } else {
+    Fail "Homepage recommendations do not link to the shared menu items"
+  }
 }
 finally {
   if ($ws -ne $null) { try { $ws.Dispose() } catch { } }

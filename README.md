@@ -74,8 +74,9 @@ This prototype uses `localStorage` for all data (menu, cart, orders, accounts, s
 
 ## Credits
 
-Drink-card photos are crops of the supplied THE UNKNOWN COFFEE printed-menu image.
-The source photo is preserved unchanged.
+Product drink photos are bundled locally in `assets/img/menu-items/` and sourced
+from Unsplash under the [Unsplash License](https://unsplash.com/license). The
+original THE UNKNOWN COFFEE photos elsewhere in `assets/img/` are unchanged.
 
 ## License
 

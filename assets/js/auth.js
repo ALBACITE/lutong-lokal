@@ -6,9 +6,10 @@
    -------------------------------
    This is a classroom simulation, not authentication.
 
-   - No password is ever asked for, so no password is ever stored.
-   - The demo passcodes live in assets/js/data.js as plain text and are
-     printed in the README on purpose, so anybody can try the prototype.
+   - Demo staff accounts still use the public passcodes in assets/js/data.js.
+   - Registered user accounts can also set a password locally for the demo.
+   - This prototype stores a lightweight client-side hash only for testing;
+     it is not a secure server-side authentication system.
    - The "session" is a record in localStorage. Anybody with access to the
      browser can read it, change it or delete it.
    - The role check here is a convenience for the demonstration. It is NOT a
@@ -18,6 +19,18 @@
 
 var LutongAuth = (function () {
   "use strict";
+
+  function hashPassword(value) {
+    var text = String(value === null || value === undefined ? "" : value);
+    var hash = 2166136261;
+
+    for (var i = 0; i < text.length; i += 1) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+
+    return (hash >>> 0).toString(16).padStart(8, "0");
+  }
 
   /* Looks up one of the two built-in demo accounts. */
   function findDemoAccount(username) {
@@ -101,12 +114,18 @@ var LutongAuth = (function () {
       };
     }
 
-    // The two built-in accounts have their own public passcode. Accounts made
-    // through the Register page share one public demo passcode. None of these
-    // values is a real password and none of them is stored.
+    // Demo accounts still use the public passcode flow. Registered accounts may
+    // also have a password hash stored locally so they can sign in with a real
+    // password while older demo registrations keep working.
     var expected = demo ? demo.passcode : LUTONG_REGISTERED_PASSCODE;
+    var passwordMatches = !!(account.passwordHash && hashPassword(code) === account.passwordHash);
+    var legacyMatches = !demo && account.passwordHash ? false : code === expected;
 
-    if (code !== expected) {
+    if (!demo && !passwordMatches && !legacyMatches) {
+      return { ok: false, field: "passcode", message: "That passcode is not correct." };
+    }
+
+    if (demo && code !== expected) {
       return { ok: false, field: "passcode", message: "That passcode is not correct." };
     }
 
@@ -125,7 +144,7 @@ var LutongAuth = (function () {
 
   /* Creates a demo CUSTOMER account.
      The role is always "user" — there is no way to register as an admin. */
-  function register(displayName, username, email) {
+  function register(displayName, username, email, password) {
     if (usernameTaken(username)) {
       return { ok: false, field: "username", message: "That username is already taken." };
     }
@@ -140,7 +159,8 @@ var LutongAuth = (function () {
       displayName: String(displayName).trim(),
       email: String(email).trim(),
       role: "user",
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      passwordHash: hashPassword(String(password || ""))
     };
 
     users.push(user);

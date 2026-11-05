@@ -92,6 +92,104 @@ var LutongValidate = (function () {
     return { ok: true, value: address };
   }
 
+  function password(value) {
+    var base = required(value, "Password");
+    if (!base.ok) {
+      return base;
+    }
+
+    var pass = base.value;
+
+    if (pass.length < 8) {
+      return fail("Password must be at least 8 characters long.");
+    }
+    if (!/[A-Z]/.test(pass)) {
+      return fail("Password must include at least one uppercase letter.");
+    }
+    if (!/[a-z]/.test(pass)) {
+      return fail("Password must include at least one lowercase letter.");
+    }
+    if (!/[0-9]/.test(pass)) {
+      return fail("Password must include at least one number.");
+    }
+    if (!/[^A-Za-z0-9]/.test(pass)) {
+      return fail("Password must include at least one special character.");
+    }
+
+    return { ok: true, value: pass };
+  }
+
+  function passwordStrength(value) {
+    var text = String(value === null || value === undefined ? "" : value);
+    var requirements = [
+      { key: "length", label: "At least 8 characters", test: function (input) { return input.length >= 8; } },
+      { key: "uppercase", label: "At least one uppercase letter", test: function (input) { return /[A-Z]/.test(input); } },
+      { key: "lowercase", label: "At least one lowercase letter", test: function (input) { return /[a-z]/.test(input); } },
+      { key: "number", label: "At least one number", test: function (input) { return /[0-9]/.test(input); } },
+      { key: "special", label: "At least one special character", test: function (input) { return /[^A-Za-z0-9]/.test(input); } }
+    ];
+
+    var met = 0;
+    for (var i = 0; i < requirements.length; i += 1) {
+      if (requirements[i].test(text)) {
+        met += 1;
+      }
+    }
+
+    if (!text) {
+      return {
+        ok: false,
+        level: "weak",
+        label: "Weak",
+        hint: "Start typing a password to see the requirements.",
+        score: 0,
+        met: 0,
+        requirements: requirements.map(function (item) {
+          return { key: item.key, label: item.label, met: false };
+        })
+      };
+    }
+
+    var level = "weak";
+    var hint = "Add more variety to make this password stronger.";
+    if (met <= 2) {
+      level = "weak";
+      hint = "Add more characters and include a mix of letters, numbers and symbols.";
+    } else if (met === 3 || met === 4) {
+      level = "fair";
+      hint = "Nice progress. Add one more requirement to make it more secure.";
+    } else {
+      level = "strong";
+      hint = "Strong password. You are ready to create your account.";
+    }
+
+    return {
+      ok: met === requirements.length,
+      level: level,
+      label: level === "strong" ? "Strong" : level === "fair" ? "Fair" : "Weak",
+      hint: hint,
+      score: met,
+      met: met,
+      requirements: requirements.map(function (item) {
+        var isMet = item.test(text);
+        return { key: item.key, label: item.label, met: isMet };
+      })
+    };
+  }
+
+  function confirmPassword(value, original) {
+    var base = required(value, "Confirm password");
+    if (!base.ok) {
+      return base;
+    }
+
+    if (String(base.value) !== String(original || "")) {
+      return fail("Passwords do not match.");
+    }
+
+    return { ok: true, value: base.value };
+  }
+
   /* Phone is optional for the prototype, but must look like a phone number
      when it is filled in. */
   function phone(value, label) {
@@ -205,6 +303,9 @@ var LutongValidate = (function () {
     fullName: fullName,
     username: username,
     email: email,
+    password: password,
+    passwordStrength: passwordStrength,
+    confirmPassword: confirmPassword,
     phone: phone,
     message: message,
     price: price,

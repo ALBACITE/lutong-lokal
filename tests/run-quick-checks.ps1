@@ -120,8 +120,8 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   $filled = Eval @'
 (function () {
   localStorage.setItem('lutonglokal.cart.v1', JSON.stringify([
-    { itemId: 'm01', name: 'Chicken Adobo', price: 185, quantity: 2, image: '' },
-    { itemId: 'm08', name: 'Pancit Bihon', price: 125, quantity: 1, image: '' }
+    { itemId: 'c01', name: 'Caramel Macchiato', price: 39, size: 'medium', quantity: 2, image: 'assets/img/menu-items/caramel-macchiato.jpg' },
+    { itemId: 'c02', name: 'Spanish Latte', price: 49, size: 'large', quantity: 1, image: 'assets/img/menu-items/spanish-latte.jpg' }
   ]));
   return 'seeded';
 })();
@@ -145,7 +145,6 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   return JSON.stringify({
     searchVisible: search.getBoundingClientRect().width > 0,
     chipCount: chips.length,
-    chipsWrap: lastChip.top > firstChip.top,
     chipsInsideWidth: lastChip.right <= window.innerWidth + 1
   });
 })();
@@ -153,10 +152,8 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   $controlResult = $controls | ConvertFrom-Json
   if ($controlResult.searchVisible -eq $true) { Pass "The search box is visible at 390px" }
   else { Fail "The search box is hidden at 390px" }
-  if ($controlResult.chipCount -eq 7) { Pass "All 7 category filters are present at 390px" }
-  else { Fail "Only $($controlResult.chipCount) category filters are present at 390px" }
-  if ($controlResult.chipsWrap -eq $true) { Pass "The category filters wrap onto more than one line at 390px" }
-  else { Fail "The category filters do not wrap at 390px" }
+  if ($controlResult.chipCount -eq 3) { Pass "All 3 menu category filters are present at 390px" }
+  else { Fail "Only $($controlResult.chipCount) category filters are present (expected 3)" }
   if ($controlResult.chipsInsideWidth -eq $true) { Pass "The category filters stay inside the screen at 390px" }
   else { Fail "The category filters overflow the screen at 390px" }
 

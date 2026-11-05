@@ -37,11 +37,12 @@
               Cart <span class="cart-badge" data-cart-count>0</span>
             </a>
           </li>
-          <li>
-            <a href="login.html" class="nav-account" data-account-link data-nav-pages="login.html register.html dashboard.html admin.html">Sign in</a>
+          <li data-register-nav><a href="register.html">Register</a></li>
+          <li data-account-nav>
+            <a href="login.html" class="nav-account" data-account-link>Sign in</a>
           </li>
-          <li>
-            <button class="btn btn-ghost btn-sm" type="button" data-sign-out hidden>Sign out</button>
+          <li data-sign-out-nav hidden>
+            <button class="btn btn-ghost btn-sm" type="button" data-sign-out>Sign out</button>
           </li>
         </ul>
       </nav>
@@ -50,7 +51,7 @@
 
   <main id="main">
     <section class="page-head">
-      <div class="container">
+      <div class="container auth-heading">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
@@ -59,48 +60,23 @@
         </nav>
         <h1>Create your customer account</h1>
         <p>
-          Register to keep your orders and pickup details in one place.
+          Create a customer account to keep your orders and pickup details together.
         </p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container split-layout">
-
-          <h2>What this account stores</h2>
-          <p class="text-muted">
-            We only keep the details needed for a customer account and order history.
-          </p>
-          <dl class="info-rows">
-            <div class="info-row">
-              <dt>Your name</dt>
-              <dd>Shown on your dashboard and order history.</dd>
-            </div>
-            <div class="info-row">
-              <dt>Username</dt>
-              <dd>Used to sign in to your account.</dd>
-            </div>
-            <div class="info-row">
-              <dt>Email address</dt>
-              <dd>Used to sign in and identify your account.</dd>
-            </div>
-          </dl>
-
-          <h3>Already have an account?</h3>
-          <div class="button-row" style="margin-bottom: 0;">
-            <a class="btn btn-primary" href="login.html">Go to sign in</a>
-          </div>
-        </div>
-
-        <div>
-          <div class="form-card">
-            <h2>Register</h2>
-            <p class="text-muted">All fields are required.</p>
+    <section class="section section-tight auth-section">
+      <div class="container auth-shell">
+          <div class="form-card auth-card">
+            <h2>Account details</h2>
+            <p class="text-muted auth-note">
+              Customer accounts and order history are saved in this browser. All fields are required.
+            </p>
 
             <div class="alert alert-success" id="register-status" role="status" aria-live="polite" hidden></div>
 
             <form id="register-form" novalidate>
-              <div class="form-grid">
+              <div class="form-grid auth-register-fields">
                 <div class="field">
                   <label for="register-name">Full name <span class="required" aria-hidden="true">*</span></label>
                   <input
@@ -122,7 +98,7 @@
                   <p class="field-error" id="register-username-error" hidden></p>
                 </div>
 
-                <div class="field">
+                <div class="field auth-field-wide">
                   <label for="register-email">Email address <span class="required" aria-hidden="true">*</span></label>
                   <input
                     type="email" id="register-email" name="email"
@@ -131,18 +107,53 @@
                   <p class="field-error" id="register-email-error" hidden></p>
                 </div>
 
-                <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Create account</button>
-                  <a class="btn btn-outline" href="login.html">I already have one</a>
+                <div class="field auth-field-wide">
+                  <label for="register-password">Password <span class="required" aria-hidden="true">*</span></label>
+                  <div class="password-field">
+                    <input
+                      type="password" id="register-password" name="password"
+                      autocomplete="new-password" maxlength="128" required
+                      aria-describedby="register-password-error register-password-requirements">
+                    <button class="password-toggle" type="button" id="register-password-toggle" data-toggle-password="register-password" aria-label="Show password">Show</button>
+                  </div>
+                  <div class="password-strength" id="register-password-strength" data-level="weak" aria-live="polite">
+                    <div class="password-meter" aria-hidden="true">
+                      <span class="password-meter-fill" id="register-password-meter"></span>
+                    </div>
+                    <div class="strength-row">
+                      <span class="strength-label" id="register-password-label">Weak</span>
+                      <span class="strength-hint" id="register-password-hint">Add more characters</span>
+                    </div>
+                  </div>
+                  <ul class="password-requirements" id="register-password-requirements" aria-label="Password requirements">
+                    <li data-requirement="length">At least 8 characters</li>
+                    <li data-requirement="uppercase">At least one uppercase letter</li>
+                    <li data-requirement="lowercase">At least one lowercase letter</li>
+                    <li data-requirement="number">At least one number</li>
+                    <li data-requirement="special">At least one special character</li>
+                  </ul>
+                  <p class="field-error" id="register-password-error" hidden></p>
                 </div>
 
-                <p class="field-hint mb-0">
-                  New accounts are always created as customer accounts.
-                </p>
+                <div class="field auth-field-wide">
+                  <label for="register-confirm-password">Confirm password <span class="required" aria-hidden="true">*</span></label>
+                  <div class="password-field">
+                    <input
+                      type="password" id="register-confirm-password" name="confirmPassword"
+                      autocomplete="new-password" maxlength="128" required
+                      aria-describedby="register-confirm-password-error">
+                    <button class="password-toggle" type="button" id="register-confirm-password-toggle" data-toggle-password="register-confirm-password" aria-label="Show confirm password">Show</button>
+                  </div>
+                  <p class="field-error" id="register-confirm-password-error" hidden></p>
+                </div>
+
+                <div class="auth-actions">
+                  <button class="btn btn-primary" type="submit">Create account</button>
+                  <p class="auth-switch">Already registered? <a href="login.html">Sign in</a></p>
+                </div>
               </div>
             </form>
           </div>
-        </div>
       </div>
     </section>
   </main>

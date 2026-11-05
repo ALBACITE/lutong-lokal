@@ -68,14 +68,14 @@ function lutongSeedItem(id, name, description, priceMedium, priceLarge, category
 
 /* Starter menu for THE UNKNOWN COFFEE. */
 var LUTONG_MENU_SEED = [
-  lutongSeedItem("c01", "Caramel Macchiato", "Rich espresso paired with creamy milk and a caramel finish.", 39, 49, "coffee", "assets/img/menu-items/caramel-macchiato.jpg", true, true),
-  lutongSeedItem("c02", "Spanish Latte", "Smooth espresso with sweet milk and a creamy texture.", 39, 49, "coffee", "assets/img/menu-items/spanish-latte.jpg", true, true),
-  lutongSeedItem("c03", "Strawberry Latte", "Espresso blended with strawberry flavor and creamy milk.", 49, 59, "coffee", "assets/img/menu-items/strawberry-latte.jpg", true, false),
-  lutongSeedItem("c04", "Matcha Latte", "Matcha with milk and a smooth finish.", 49, 59, "coffee", "assets/img/menu-items/matcha-latte.jpg", true, false),
-  lutongSeedItem("c05", "Cappuccino", "Classic espresso with velvety milk foam and a balanced finish.", 49, 59, "coffee", "assets/img/menu-items/cappuccino.jpg", true, false),
-  lutongSeedItem("n01", "Taro", "Creamy taro drink with a smooth, sweet flavor.", 49, 59, "non-coffee", "assets/img/menu-items/taro.jpg", true, false),
-  lutongSeedItem("n02", "Creamy Matcha", "Matcha blended with creamy milk.", 49, 59, "non-coffee", "assets/img/menu-items/creamy-matcha.jpg", true, false),
-  lutongSeedItem("n03", "Creamy Strawberry", "Sweet strawberry flavor with a rich, creamy finish.", 49, 59, "non-coffee", "assets/img/menu-items/creamy-strawberry.jpg", true, false),
-  lutongSeedItem("n04", "Matcha Strawberry", "A smooth blend of matcha and strawberry notes.", 49, 59, "non-coffee", "assets/img/menu-items/matcha-strawberry.jpg", true, false),
-  lutongSeedItem("n05", "Dark Choco", "Smooth dark chocolate drink with a rich cocoa finish.", 49, 59, "non-coffee", "assets/img/menu-items/dark-choco.jpg", true, false)
+  lutongSeedItem("c01", "Caramel Macchiato", "Rich espresso paired with creamy milk and a caramel finish.", 39, 49, "coffee", "assets/img/caramel-macchiato.jpg", true, true),
+  lutongSeedItem("c02", "Spanish Latte", "Smooth espresso with sweet milk and a creamy texture.", 39, 49, "coffee", "assets/img/spanish-latte.jpg", true, true),
+  lutongSeedItem("c03", "Strawberry Latte", "Espresso blended with strawberry flavor and creamy milk.", 49, 59, "coffee", "assets/img/strawberry-latte.jpg", true, false),
+  lutongSeedItem("c04", "Matcha Latte", "Matcha with milk and a smooth finish.", 49, 59, "coffee", "assets/img/matcha-latte.jpg", true, false),
+  lutongSeedItem("c05", "Cappuccino", "Classic espresso with velvety milk foam and a balanced finish.", 49, 59, "coffee", "assets/img/cappuccino.jpg", true, false),
+  lutongSeedItem("n01", "Taro", "Creamy taro drink with a smooth, sweet flavor.", 49, 59, "non-coffee", "assets/img/taro.jpg", true, false),
+  lutongSeedItem("n02", "Creamy Matcha", "Matcha blended with creamy milk.", 49, 59, "non-coffee", "assets/img/creamy-matcha.jpg", true, false),
+  lutongSeedItem("n03", "Creamy Strawberry", "Sweet strawberry flavor with a rich, creamy finish.", 49, 59, "non-coffee", "assets/img/creamy-strawberry.jpg", true, false),
+  lutongSeedItem("n04", "Matcha Strawberry", "A smooth blend of matcha and strawberry notes.", 49, 59, "non-coffee", "assets/img/matcha-strawberry.jpg", true, false),
+  lutongSeedItem("n05", "Dark Choco", "Smooth dark chocolate drink with a rich cocoa finish.", 49, 59, "non-coffee", "assets/img/dark-choco.jpg", true, false)
 ];

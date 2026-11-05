@@ -37,11 +37,12 @@
               Cart <span class="cart-badge" data-cart-count>0</span>
             </a>
           </li>
-          <li>
-            <a href="login.html" class="nav-account" data-account-link data-nav-pages="login.html register.html dashboard.html admin.html">Sign in</a>
+          <li data-register-nav><a href="register.html">Register</a></li>
+          <li data-account-nav>
+            <a href="login.html" class="nav-account" data-account-link>Sign in</a>
           </li>
-          <li>
-            <button class="btn btn-ghost btn-sm" type="button" data-sign-out hidden>Sign out</button>
+          <li data-sign-out-nav hidden>
+            <button class="btn btn-ghost btn-sm" type="button" data-sign-out>Sign out</button>
           </li>
         </ul>
       </nav>
@@ -50,7 +51,7 @@
 
   <main id="main">
     <section class="page-head">
-      <div class="container">
+      <div class="container auth-heading">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <ol>
             <li><a href="index.html">Home</a></li>
@@ -64,25 +65,12 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="container split-layout">
-
-          <h3>Need an account of your own?</h3>
-          <p class="text-muted">
-            Create a customer account to keep your orders together in one place.
-          </p>
-          <div class="button-row" style="margin-bottom: 0;">
-            <a class="btn btn-primary" href="register.html">Create an account</a>
-            <a class="btn btn-outline" href="index.html">Back to home</a>
-          </div>
-
-        </div>
-
-        <div>
-          <div class="form-card">
-            <h2>Sign in</h2>
-            <p class="text-muted">
-              Enter your username, email address, and passcode to continue.
+    <section class="section section-tight auth-section">
+      <div class="container auth-shell auth-shell-login">
+          <div class="form-card auth-card">
+            <h2>Welcome back</h2>
+            <p class="text-muted auth-note">
+              Sign in with your username, email address, and passcode.
             </p>
 
             <div class="alert alert-success" id="login-status" role="status" aria-live="polite" hidden></div>
@@ -109,23 +97,23 @@
 
                 <div class="field">
                   <label for="login-passcode">Passcode <span class="required" aria-hidden="true">*</span></label>
-                  <input
-                    type="text" id="login-passcode" name="passcode"
-                    autocomplete="off" maxlength="40" required
-                    aria-describedby="login-passcode-error">
+                  <div class="password-field">
+                    <input
+                      type="password" id="login-passcode" name="passcode"
+                      autocomplete="off" maxlength="40" required
+                      aria-describedby="login-passcode-error">
+                    <button class="password-toggle" type="button" id="login-passcode-toggle" data-toggle-password="login-passcode" aria-label="Show passcode">Show</button>
+                  </div>
                   <p class="field-error" id="login-passcode-error" hidden></p>
                 </div>
 
-                <div class="button-row">
+                <div class="auth-actions">
                   <button class="btn btn-primary" type="submit">Sign in</button>
-                  <a class="btn btn-outline" href="register.html">Create an account</a>
+                  <p class="auth-switch">New here? <a href="register.html">Create a customer account</a></p>
                 </div>
-
-
               </div>
             </form>
           </div>
-        </div>
       </div>
     </section>
   </main>

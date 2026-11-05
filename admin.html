@@ -49,11 +49,12 @@
               Cart <span class="cart-badge" data-cart-count>0</span>
             </a>
           </li>
-          <li>
-            <a href="login.html" class="nav-account" data-account-link data-nav-pages="login.html register.html dashboard.html admin.html">Sign in</a>
+          <li data-register-nav><a href="register.html">Register</a></li>
+          <li data-account-nav>
+            <a href="login.html" class="nav-account" data-account-link>Sign in</a>
           </li>
-          <li>
-            <button class="btn btn-ghost btn-sm" type="button" data-sign-out hidden>Sign out</button>
+          <li data-sign-out-nav hidden>
+            <button class="btn btn-ghost btn-sm" type="button" data-sign-out>Sign out</button>
           </li>
         </ul>
       </nav>
@@ -74,9 +75,9 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="alert alert-warning">
+    <section class="section section-tight admin-section">
+      <div class="container admin-shell">
+        <div class="alert alert-warning admin-warning" id="admin-warning">
           <p>
             <strong>Opening this page does not grant you access.</strong>
             Staff access is controlled in the browser for this static demo and is intended only for local testing.
@@ -96,41 +97,67 @@
         </div>
 
         <!-- Shown when the demo administrator session is active. -->
-        <div id="admin-content" hidden>
+        <div id="admin-content" class="admin-dashboard" hidden>
           <div class="alert alert-success" id="admin-status" role="status" aria-live="polite" hidden></div>
 
-          <h2>Orders</h2>
-          <p class="text-muted">
-            Pickups received on this device. Update a status to move an order along and the customer dashboard will reflect the change.
-          </p>
-
-          <div class="table-wrap">
-            <table class="data-table" id="admin-orders-table">
-              <caption>All orders, newest first</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Order</th>
-                  <th scope="col">Placed</th>
-                  <th scope="col">Customer</th>
-                  <th scope="col">Items</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+          <div class="admin-overview">
+            <div>
+              <h2>Store overview</h2>
+              <p class="text-muted">Orders, menu availability, and customer enquiries saved in this browser.</p>
+            </div>
+            <div class="admin-stats" aria-label="Store summary">
+              <article class="admin-stat">
+                <span class="admin-stat-label">Orders</span>
+                <strong id="admin-stat-orders">0</strong>
+              </article>
+              <article class="admin-stat">
+                <span class="admin-stat-label">Active pickups</span>
+                <strong id="admin-stat-active">0</strong>
+              </article>
+              <article class="admin-stat">
+                <span class="admin-stat-label">Menu items</span>
+                <strong id="admin-stat-menu">0</strong>
+              </article>
+              <article class="admin-stat">
+                <span class="admin-stat-label">Available drinks</span>
+                <strong id="admin-stat-available">0</strong>
+              </article>
+            </div>
           </div>
-          <p class="text-muted">
-            <span class="badge badge-category" id="order-count">0</span>
-            order(s) on this device.
-          </p>
 
-          <h2>Menu</h2>
-          <p class="text-muted">
-            Add a drink, edit its details, mark it unavailable, or remove it from the menu. Changes apply to the coffee menu page straight away.
-          </p>
+          <section class="admin-panel" aria-labelledby="admin-orders-title">
+            <h2 id="admin-orders-title">Pickup orders</h2>
+            <p class="text-muted">Update an order status to keep the customer dashboard in sync.</p>
 
-          <div class="split-layout">
+            <div class="table-wrap">
+              <table class="data-table" id="admin-orders-table">
+                <caption>All orders, newest first</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Order</th>
+                    <th scope="col">Placed</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Items</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="text-muted">
+              <span class="badge badge-category" id="order-count">0</span>
+              order(s) on this device.
+            </p>
+          </section>
+
+          <section class="admin-panel" aria-labelledby="admin-menu-title">
+            <h2 id="admin-menu-title">Menu management</h2>
+            <p class="text-muted">
+              Add a drink, edit its details, mark it unavailable, or remove it from the menu. Changes apply to the coffee menu page straight away.
+            </p>
+
+          <div class="admin-menu-layout">
             <div>
               <div class="table-wrap">
                 <table class="data-table" id="admin-menu-table">
@@ -232,12 +259,15 @@
               </div>
             </div>
           </div>
+          </section>
 
-          <h2>Messages from the contact page</h2>
-          <p class="text-muted">
-            Enquiries sent through the contact form on this device.
-          </p>
-          <div id="admin-messages"></div>
+          <section class="admin-panel" aria-labelledby="admin-messages-title">
+            <h2 id="admin-messages-title">Customer messages</h2>
+            <p class="text-muted">
+              Enquiries sent through the contact form on this device.
+            </p>
+            <div id="admin-messages"></div>
+          </section>
         </div>
       </div>
     </section>

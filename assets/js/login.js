@@ -41,6 +41,25 @@
     }
   }
 
+  function attachPasswordToggle(buttonId) {
+    var trigger = byId(buttonId);
+    if (!trigger) {
+      return;
+    }
+
+    trigger.addEventListener("click", function () {
+      var targetId = trigger.getAttribute("data-toggle-password");
+      var field = byId(targetId);
+      if (!field) {
+        return;
+      }
+      var isPassword = field.type === "password";
+      field.type = isPassword ? "text" : "password";
+      trigger.textContent = isPassword ? "Hide" : "Show";
+      trigger.setAttribute("aria-label", (isPassword ? "Hide" : "Show") + " passcode");
+    });
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     clearErrors();
@@ -111,6 +130,7 @@
     }
 
     form.addEventListener("submit", handleSubmit);
+    attachPasswordToggle("login-passcode-toggle");
 
     var customerButton = byId("fill-demo-customer");
     if (customerButton) {

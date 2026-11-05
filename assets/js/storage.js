@@ -6,7 +6,8 @@
    - Browser storage can be disabled, full, or holding corrupt JSON.
    - Every read is validated and repaired so a broken entry can never crash
      a page.
-   - Nothing secret is ever stored here: no passwords, no payment details.
+   - Local demo credentials are intentionally limited and are not a secure
+     production authentication system.
    ========================================================================== */
 
 var LUTONG_STORAGE_KEYS = {
@@ -277,7 +278,8 @@ function lutongCleanUser(raw) {
     displayName: String(raw.displayName || username).slice(0, 80),
     email: email.slice(0, 120),
     role: "user",
-    createdAt: String(raw.createdAt || "")
+    createdAt: String(raw.createdAt || ""),
+    passwordHash: String(raw.passwordHash || "").slice(0, 64)
   };
 }
 
@@ -383,11 +385,24 @@ function lutongGetMenu() {
   }
 
   var clean = [];
+  var imagePathsChanged = false;
   for (var j = 0; j < stored.length; j += 1) {
     var item = lutongCleanMenuItem(stored[j]);
     if (item) {
+      for (var seedIndex = 0; seedIndex < LUTONG_MENU_SEED.length; seedIndex += 1) {
+        var seed = LUTONG_MENU_SEED[seedIndex];
+        var previousImagePath = seed.image.replace("assets/img/", "assets/img/menu-items/");
+        if (item.id === seed.id && item.image === previousImagePath) {
+          item.image = seed.image;
+          imagePathsChanged = true;
+          break;
+        }
+      }
       clean.push(item);
     }
+  }
+  if (imagePathsChanged) {
+    lutongWrite(LUTONG_STORAGE_KEYS.menu, clean, false);
   }
   return clean;
 }

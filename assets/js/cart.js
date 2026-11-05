@@ -67,8 +67,8 @@
     var img = document.createElement("img");
     img.src = line.image;
     img.alt = line.name + " drink";
-    img.width = 84;
-    img.height = 84;
+    img.width = 124;
+    img.height = 124;
     img.loading = "lazy";
     img.decoding = "async";
     img.setAttribute("data-fallback-text", line.name);

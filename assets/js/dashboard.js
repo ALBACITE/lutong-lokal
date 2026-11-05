@@ -134,6 +134,7 @@
     var usernameNode = byId("account-username");
     var emailNode = byId("account-email");
     var sinceNode = byId("account-since");
+    var roleNode = byId("account-role");
     var welcomeBox = byId("dashboard-welcome");
 
     if (nameNode) {
@@ -147,6 +148,9 @@
     }
     if (sinceNode) {
       sinceNode.textContent = LutongUI.formatDateTime(session.loginAt);
+    }
+    if (roleNode) {
+      roleNode.textContent = session.role === "admin" ? "Administrator" : "Customer";
     }
     if (welcomeBox) {
       welcomeBox.hidden = !session.isNew;

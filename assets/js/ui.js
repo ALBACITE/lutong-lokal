@@ -167,7 +167,10 @@ var LutongUI = (function () {
   function refreshAccountLink() {
     var session = lutongGetSession();
     var link = document.querySelector("[data-account-link]");
-    var signOut = document.querySelector("[data-sign-out]");
+    var accountNav = document.querySelector("[data-account-nav]");
+    var registerNav = document.querySelector("[data-register-nav]");
+    var signOutNav = document.querySelector("[data-sign-out-nav]");
+    var signOutButtons = document.querySelectorAll("[data-sign-out]");
 
     if (link) {
       if (!session) {
@@ -182,13 +185,27 @@ var LutongUI = (function () {
       }
     }
 
-    if (signOut) {
+    if (accountNav) {
+      accountNav.hidden = false;
+    }
+    if (registerNav) {
+      registerNav.hidden = !!session;
+    }
+    if (signOutNav) {
+      signOutNav.hidden = !session;
+    }
+
+    for (var i = 0; i < signOutButtons.length; i += 1) {
+      var signOut = signOutButtons[i];
       if (session) {
         signOut.hidden = false;
-        signOut.addEventListener("click", function () {
-          lutongClearSession();
-          window.location.href = "index.html";
-        });
+        if (signOut.dataset.signOutBound !== "true") {
+          signOut.dataset.signOutBound = "true";
+          signOut.addEventListener("click", function () {
+            lutongClearSession();
+            window.location.href = "index.html";
+          });
+        }
       } else {
         signOut.hidden = true;
       }
