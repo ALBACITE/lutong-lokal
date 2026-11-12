@@ -14,9 +14,11 @@ var LUTONG_STORAGE_KEYS = {
   menu: "lutonglokal.menu.v1",
   cart: "lutonglokal.cart.v1",
   orders: "lutonglokal.orders.v1",
+  reservations: "lutonglokal.reservations.v1",
   users: "lutonglokal.users.v1",
   session: "lutonglokal.session.v1",
   myOrders: "lutonglokal.myorders.v1",
+  myReservations: "lutonglokal.myreservations.v1",
   messages: "lutonglokal.messages.v1"
 };
 
@@ -257,6 +259,48 @@ function lutongCleanOrder(raw) {
   };
 }
 
+function lutongCleanReservation(raw) {
+  if (!raw || typeof raw !== "object") {
+    return null;
+  }
+
+  var id = String(raw.id || "").trim();
+  var areaId = String(raw.areaId || "").trim();
+  var tableId = String(raw.tableId || "").trim();
+  var reservationDate = String(raw.reservationDate || "").trim();
+  var reservationTime = String(raw.reservationTime || "").trim();
+  var guestCount = Math.floor(Number(raw.guestCount));
+  var status = String(raw.status || "");
+  var customerName = String(raw.customerName || "").trim();
+
+  if (
+    !id || !areaId || !tableId ||
+    customerName.length < 2 ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(reservationDate) ||
+    !/^([01]\d|2[0-3]):[0-5]\d$/.test(reservationTime) ||
+    !isFinite(guestCount) || guestCount < 1 ||
+    ["Pending", "Approved", "Rejected", "Cancelled"].indexOf(status) === -1
+  ) {
+    return null;
+  }
+
+  return {
+    id: id.slice(0, 60),
+    createdAt: String(raw.createdAt || ""),
+    ownerUsername: String(raw.ownerUsername || "").slice(0, 40),
+    customerName: customerName.slice(0, 80),
+    areaId: areaId.slice(0, 40),
+    tableId: tableId.slice(0, 40),
+    tableNumber: String(raw.tableNumber || "").slice(0, 40),
+    capacity: Math.min(20, Math.max(1, Math.floor(Number(raw.capacity) || guestCount))),
+    guestCount: Math.min(20, guestCount),
+    reservationDate: reservationDate,
+    reservationTime: reservationTime,
+    specialRequests: String(raw.specialRequests || "").slice(0, 400),
+    status: status
+  };
+}
+
 /* Accounts loaded from storage are ALWAYS forced to the "user" role.
    This is a client-side convenience, not a security control — anyone can
    still edit localStorage by hand. */
@@ -490,6 +534,33 @@ function lutongSaveOrders(orders) {
   return lutongWrite(LUTONG_STORAGE_KEYS.orders, clean, false);
 }
 
+function lutongGetReservations() {
+  var stored = lutongRead(LUTONG_STORAGE_KEYS.reservations, [], false);
+  if (!Array.isArray(stored)) {
+    return [];
+  }
+
+  var clean = [];
+  for (var i = 0; i < stored.length; i += 1) {
+    var reservation = lutongCleanReservation(stored[i]);
+    if (reservation) {
+      clean.push(reservation);
+    }
+  }
+  return clean;
+}
+
+function lutongSaveReservations(reservations) {
+  var clean = [];
+  for (var i = 0; i < reservations.length; i += 1) {
+    var reservation = lutongCleanReservation(reservations[i]);
+    if (reservation) {
+      clean.push(reservation);
+    }
+  }
+  return lutongWrite(LUTONG_STORAGE_KEYS.reservations, clean, false);
+}
+
 function lutongGetUsers() {
   var stored = lutongRead(LUTONG_STORAGE_KEYS.users, [], false);
   if (!Array.isArray(stored)) {
@@ -570,6 +641,29 @@ function lutongAddMyOrderId(id) {
   if (id && ids.indexOf(id) === -1) {
     ids.push(id);
     lutongWrite(LUTONG_STORAGE_KEYS.myOrders, ids, false);
+  }
+}
+
+function lutongGetMyReservationIds() {
+  var stored = lutongRead(LUTONG_STORAGE_KEYS.myReservations, [], false);
+  if (!Array.isArray(stored)) {
+    return [];
+  }
+  var ids = [];
+  for (var i = 0; i < stored.length; i += 1) {
+    var id = String(stored[i] || "").trim();
+    if (id) {
+      ids.push(id.slice(0, 60));
+    }
+  }
+  return ids;
+}
+
+function lutongAddMyReservationId(id) {
+  var ids = lutongGetMyReservationIds();
+  if (id && ids.indexOf(id) === -1) {
+    ids.push(id);
+    lutongWrite(LUTONG_STORAGE_KEYS.myReservations, ids, false);
   }
 }
 

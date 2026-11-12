@@ -15,6 +15,8 @@
   var signedInBox = null;
   var ordersBox = null;
   var guestOrdersBox = null;
+  var reservationsBox = null;
+  var guestReservationsBox = null;
 
   function byId(id) {
     return document.getElementById(id);
@@ -129,6 +131,108 @@
     }
   }
 
+  function buildReservationCard(reservation, username) {
+    var card = document.createElement("article");
+    card.className = "card reservation-customer-card";
+    card.setAttribute("data-reservation-id", reservation.id);
+
+    var body = document.createElement("div");
+    body.className = "card-body";
+
+    var head = document.createElement("div");
+    head.className = "order-card-head";
+    var id = document.createElement("strong");
+    id.className = "mono";
+    id.textContent = reservation.id;
+    var status = document.createElement("span");
+    status.className = LutongReservations.statusClass(reservation.status);
+    status.textContent = reservation.status;
+    head.appendChild(id);
+    head.appendChild(status);
+
+    var summary = document.createElement("p");
+    summary.className = "reservation-customer-summary";
+    summary.textContent = LutongReservations.areaName(reservation.areaId) +
+      " · Table " + reservation.tableNumber + " · " +
+      reservation.guestCount + (reservation.guestCount === 1 ? " guest" : " guests");
+
+    var when = document.createElement("p");
+    when.className = "text-muted";
+    when.textContent = "Visit: " + LutongUI.formatDateTime(
+      reservation.reservationDate + "T" + reservation.reservationTime
+    );
+
+    var requests = document.createElement("p");
+    requests.className = "text-muted reservation-customer-requests";
+    requests.textContent = reservation.specialRequests
+      ? "Special requests: " + reservation.specialRequests
+      : "No special requests";
+
+    body.appendChild(head);
+    body.appendChild(summary);
+    body.appendChild(when);
+    body.appendChild(requests);
+
+    if (reservation.status === "Pending" || reservation.status === "Approved") {
+      var actions = document.createElement("div");
+      actions.className = "button-row reservation-customer-actions";
+      var cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "btn btn-outline btn-sm";
+      cancel.setAttribute("data-cancel-reservation", reservation.id);
+      cancel.textContent = "Cancel reservation";
+      actions.appendChild(cancel);
+      body.appendChild(actions);
+    }
+
+    card.appendChild(body);
+    card.setAttribute("data-owner-username", username || "");
+    return card;
+  }
+
+  function renderReservations(target, username) {
+    if (!target) {
+      return;
+    }
+    var reservations = LutongReservations.getForCustomer(username || "");
+    target.innerHTML = "";
+    if (reservations.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "empty-state reservation-empty";
+      var heading = document.createElement("h3");
+      heading.textContent = "No reservations yet";
+      var text = document.createElement("p");
+      text.textContent = "Your table reservations will appear here with their latest status.";
+      var link = document.createElement("a");
+      link.className = "btn btn-primary";
+      link.href = "reservations.html";
+      link.textContent = "Reserve a table";
+      empty.appendChild(heading);
+      empty.appendChild(text);
+      empty.appendChild(link);
+      target.appendChild(empty);
+      return;
+    }
+    for (var i = 0; i < reservations.length; i += 1) {
+      target.appendChild(buildReservationCard(reservations[i], username));
+    }
+  }
+
+  function handleReservationClick(event) {
+    var button = event.target.closest("[data-cancel-reservation]");
+    if (!button) {
+      return;
+    }
+    var session = LutongAuth.getSession();
+    var username = session ? session.username : "";
+    var reservationId = button.getAttribute("data-cancel-reservation");
+    if (!LutongReservations.cancel(reservationId, username)) {
+      button.disabled = true;
+      button.textContent = "Could not cancel";
+    }
+    render();
+  }
+
   function renderAccount(session) {
     var nameNode = byId("account-display-name");
     var usernameNode = byId("account-username");
@@ -172,6 +276,7 @@
         signedInBox.hidden = true;
       }
       renderOrders(guestOrdersBox);
+      renderReservations(guestReservationsBox, "");
       return;
     }
 
@@ -184,6 +289,7 @@
 
     renderAccount(session);
     renderOrders(ordersBox);
+    renderReservations(reservationsBox, session.username);
   }
 
   function init() {
@@ -191,17 +297,28 @@
     signedInBox = byId("dashboard-signed-in");
     ordersBox = byId("dashboard-orders");
     guestOrdersBox = byId("dashboard-guest-orders");
+    reservationsBox = byId("dashboard-reservations");
+    guestReservationsBox = byId("dashboard-guest-reservations");
 
     if (!signedOutBox && !signedInBox) {
       return;
     }
 
     render();
+    if (reservationsBox) {
+      reservationsBox.addEventListener("click", handleReservationClick);
+    }
+    if (guestReservationsBox) {
+      guestReservationsBox.addEventListener("click", handleReservationClick);
+    }
 
     // If the admin changes an order status in another tab, this page updates
     // without a manual refresh.
     window.addEventListener("storage", function (event) {
       if (event.key === "lutonglokal.orders.v1") {
+        render();
+      }
+      if (event.key === "lutonglokal.reservations.v1") {
         render();
       }
     });

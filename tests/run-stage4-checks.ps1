@@ -142,7 +142,7 @@ try {
   }
 
   Write-Host "`n=== 1. The Stage 4 pages load with no console errors ===" -ForegroundColor Cyan
-  foreach ($page in @("login.html","register.html","dashboard.html","admin.html")) {
+  foreach ($page in @("login.html","register.html","dashboard.html","admin.html","reservations.html")) {
     Reset-Demo | Out-Null
     Open-Page $page
     $errors = (Eval "JSON.stringify(window.__e || [])") | ConvertFrom-Json
@@ -417,7 +417,7 @@ document.querySelector('[data-confirm-delete="$newId"]').click(); 'clicked'
   Check ($linkHref -eq "dashboard.html") "The account link points to the dashboard" "The account link pointed to: $linkHref"
 
   Write-Host "`n=== 17. No console errors during the whole run ===" -ForegroundColor Cyan
-  foreach ($page in @("login.html","register.html","dashboard.html","admin.html")) {
+  foreach ($page in @("login.html","register.html","dashboard.html","admin.html","reservations.html")) {
     Open-Page $page
     $errors = (Eval "JSON.stringify(window.__e || [])") | ConvertFrom-Json
     Check ($errors.Count -eq 0) "$page still loads with no console errors" "$page logged errors: $($errors -join '; ')"

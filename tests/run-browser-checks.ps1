@@ -151,7 +151,7 @@ try {
 
   # -------------------------------------------------------------------------
   Write-Host "`n=== 1. Every page loads with no console errors ===" -ForegroundColor Cyan
-  $pages = @("index.html","menu.html","cart.html","about.html","contact.html","login.html","register.html","dashboard.html","admin.html")
+  $pages = @("index.html","menu.html","cart.html","about.html","contact.html","login.html","register.html","dashboard.html","admin.html","reservations.html")
   foreach ($page in $pages) {
     Open-Page $page
     $errors = Evaluate $ws $idHolder "JSON.stringify(window.__llErrors || [])"
@@ -175,12 +175,13 @@ try {
 document.querySelectorAll('.primary-nav a[aria-current="page"]').length
 '@
     $badge = Evaluate $ws $idHolder "(document.querySelector('[data-cart-count]') || {}).textContent || ''"
+    $currentExpected = if ($page -eq "dashboard.html" -or $page -eq "admin.html") { 0 } else { 1 }
 
-    if ($navLinks -eq 6) { Pass "$page shows all 6 main navigation links" }
-    else { Fail "$page shows $navLinks navigation links (expected 6)" }
+    if ($navLinks -eq 8) { Pass "$page shows all 8 main navigation links" }
+    else { Fail "$page shows $navLinks navigation links (expected 8)" }
 
-    if ($current -eq 1) { Pass "$page marks exactly one link as the current page" }
-    else { Fail "$page marks $current links as current (expected 1)" }
+    if ($current -eq $currentExpected) { Pass "$page marks $currentExpected link(s) as current" }
+    else { Fail "$page marks $current links as current (expected $currentExpected)" }
 
     if ($badge -ne $null -and $badge -ne "") { Pass "$page shows a cart badge (value '$badge')" }
     else { Fail "$page has no cart badge value" }
@@ -464,7 +465,7 @@ document.querySelectorAll('.primary-nav a[aria-current="page"]').length
   $null = Invoke-Cdp $ws $idHolder "Emulation.setDeviceMetricsOverride" @{
     width = 390; height = 844; deviceScaleFactor = 1; mobile = $true
   }
-  foreach ($page in @("index.html","menu.html","contact.html","login.html")) {
+  foreach ($page in @("index.html","menu.html","contact.html","login.html","reservations.html")) {
     Open-Page $page
     $small = Evaluate $ws $idHolder @'
 (function () {
@@ -716,6 +717,163 @@ localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
   } else {
     Fail "Homepage recommendations do not link to the shared menu items"
   }
+
+  Write-Host "`n=== 8. Seat reservation workflow ===" -ForegroundColor Cyan
+  Evaluate $ws $idHolder "localStorage.clear(); 'cleared'" | Out-Null
+  Evaluate $ws $idHolder @'
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'demo', displayName: 'Demo Customer', email: 'demo@lutonglokal.test',
+  role: 'user', loginAt: new Date().toISOString(), isNew: false
+}));
+'@ | Out-Null
+  Open-Page "reservations.html"
+  $reservationImageFailures = Evaluate $ws $idHolder "(function(){return Array.prototype.filter.call(document.images,function(img){return !img.complete||img.naturalWidth===0;}).length;})()"
+  if ($reservationImageFailures -eq 0) { Pass "Reservation page logo image loads successfully" }
+  else { Fail "Reservation page has $reservationImageFailures broken image(s)" }
+  $reservationDate = Evaluate $ws $idHolder @'
+(function () {
+  var date = new Date();
+  date.setDate(date.getDate() + 3);
+  function pad(value) { return value < 10 ? '0' + value : String(value); }
+  var value = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  var dateField = document.getElementById('reservation-date');
+  var timeField = document.getElementById('reservation-time');
+  dateField.value = value;
+  dateField.dispatchEvent(new Event('change', { bubbles: true }));
+  timeField.value = '13:00';
+  timeField.dispatchEvent(new Event('change', { bubbles: true }));
+  document.querySelector('[data-reservation-area="window"]').click();
+  return value;
+})();
+'@
+  Evaluate $ws $idHolder "document.querySelector('[data-reservation-table=WIN-01]').click(); 'selected'" | Out-Null
+  Evaluate $ws $idHolder "document.getElementById('reservation-guests').value='3'; document.getElementById('reservation-form').requestSubmit(); 'checked'" | Out-Null
+  $capacityMessage = Evaluate $ws $idHolder "document.getElementById('reservation-status').textContent"
+  $capacityNotSaved = Evaluate $ws $idHolder "JSON.parse(localStorage.getItem('lutonglokal.reservations.v1') || '[]').length"
+  if ($capacityMessage -like "*seats up to 2*" -and $capacityNotSaved -eq 0) { Pass "The selected table's capacity is enforced before saving" }
+  else { Fail "Capacity validation failed or saved an over-capacity reservation" }
+  Evaluate $ws $idHolder "document.getElementById('reservation-guests').value='2'; document.getElementById('reservation-form').requestSubmit(); 'submitted'" | Out-Null
+  $savedReservationJson = Evaluate $ws $idHolder "JSON.stringify(JSON.parse(localStorage.getItem('lutonglokal.reservations.v1') || '[]')[0])"
+  $savedReservation = $savedReservationJson | ConvertFrom-Json
+  $reservationId = $savedReservation.id
+  $pendingSaved = $savedReservation.status -eq "Pending" -and $savedReservation.tableId -eq "WIN-01"
+  if ($pendingSaved) { Pass "Customer booking saves a Pending reservation with a unique ID and selected table" }
+  else { Fail "Reservation was not saved as Pending with its selected table" }
+  $duplicate = Evaluate $ws $idHolder @'
+(function () {
+  return JSON.stringify(LutongReservations.create({
+    customerName: 'Second Customer', guestCount: 2,
+    reservationDate: document.getElementById('reservation-date').value,
+    reservationTime: document.getElementById('reservation-time').value,
+    areaId: 'window', tableId: 'WIN-01'
+  }));
+})();
+'@
+  $duplicateResult = $duplicate | ConvertFrom-Json
+  if ($duplicateResult.ok -eq $false) { Pass "A second overlapping booking for the same table is rejected" }
+  else { Fail "The same table accepted an overlapping booking" }
+  $durationBoundary = Evaluate $ws $idHolder "JSON.stringify({overlap:LutongReservations.isTableAvailable('window','WIN-01','$reservationDate','14:29'),after:LutongReservations.isTableAvailable('window','WIN-01','$reservationDate','14:30')})"
+  $durationResult = $durationBoundary | ConvertFrom-Json
+  if ($durationResult.overlap -eq $false -and $durationResult.after -eq $true) { Pass "The configured 90-minute duration releases the table at the overlap boundary" }
+  else { Fail "Reservation overlap did not follow the configured duration boundary" }
+  $pastRejected = Evaluate $ws $idHolder @'
+(function () {
+  var date = new Date();
+  date.setDate(date.getDate() - 1);
+  function pad(value) { return value < 10 ? '0' + value : String(value); }
+  var value = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  return LutongReservations.isFutureDateTime(value, '13:00');
+})();
+'@
+  if ($pastRejected -eq $false) { Pass "Past reservation dates are rejected" }
+  else { Fail "The reservation date validator accepted a past date" }
+
+  Open-Page "dashboard.html"
+  $customerReservationId = Evaluate $ws $idHolder "document.querySelector('#dashboard-reservations .reservation-customer-card .mono').textContent"
+  if ($customerReservationId -eq $reservationId) { Pass "My Reservations shows the customer's saved reservation" }
+  else { Fail "My Reservations did not show the customer's reservation" }
+
+  Evaluate $ws $idHolder @'
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'admin', displayName: 'Demo Administrator', email: 'admin@lutonglokal.test',
+  role: 'admin', loginAt: new Date().toISOString(), isNew: false
+}));
+'@ | Out-Null
+  Open-Page "admin.html"
+  $adminReservationId = Evaluate $ws $idHolder "document.querySelector('#admin-reservations [data-reservation-row] .mono').textContent"
+  $configuredTableCount = Evaluate $ws $idHolder "document.querySelectorAll('#admin-reservation-inventory li').length"
+  if ($adminReservationId -eq $reservationId) { Pass "Admin Reservations shows the same customer booking" }
+  else { Fail "Admin Reservations did not show the customer booking" }
+  if ($configuredTableCount -eq 20) { Pass "Admin inventory groups the configured 20 tables by seating area" }
+  else { Fail "Admin inventory listed $configuredTableCount tables instead of 20" }
+  Evaluate $ws $idHolder "document.querySelector('[data-reservation-action=Approved]').click(); 'approved'" | Out-Null
+  $approved = Evaluate $ws $idHolder "JSON.parse(localStorage.getItem('lutonglokal.reservations.v1'))[0].status"
+  if ($approved -eq "Approved") { Pass "Admin can approve a pending reservation" }
+  else { Fail "Admin approval stored status '$approved'" }
+  $approvedTableBlocked = Evaluate $ws $idHolder "LutongReservations.isTableAvailable('window','WIN-01','$reservationDate','13:00')"
+  if ($approvedTableBlocked -eq $false) { Pass "An Approved reservation continues to block its table" }
+  else { Fail "An Approved reservation did not block its table" }
+
+  Open-Page "reservations.html"
+  Evaluate $ws $idHolder @"
+(function () {
+  var dateField = document.getElementById('reservation-date');
+  var timeField = document.getElementById('reservation-time');
+  dateField.value = '$reservationDate';
+  dateField.dispatchEvent(new Event('change', { bubbles: true }));
+  timeField.value = '13:00';
+  timeField.dispatchEvent(new Event('change', { bubbles: true }));
+  document.querySelector('[data-reservation-area="window"]').click();
+  return 'checked';
+})();
+"@ | Out-Null
+  $approvedTableDisabled = Evaluate $ws $idHolder "document.querySelector('[data-reservation-table=WIN-01]').disabled"
+  $approvedTableState = Evaluate $ws $idHolder "document.querySelector('[data-reservation-table=WIN-01] .reservation-table-state').textContent"
+  if ($approvedTableDisabled -eq $true -and $approvedTableState -eq "Reserved") { Pass "Approved table is visibly unavailable in the selection interface" }
+  else { Fail "Approved table was not shown as reserved" }
+
+  Evaluate $ws $idHolder @'
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'demo', displayName: 'Demo Customer', email: 'demo@lutonglokal.test',
+  role: 'user', loginAt: new Date().toISOString(), isNew: false
+}));
+'@ | Out-Null
+  Open-Page "dashboard.html"
+  $approvedInDashboard = Evaluate $ws $idHolder "document.querySelector('#dashboard-reservations .status').textContent"
+  Evaluate $ws $idHolder "document.querySelector('[data-cancel-reservation]').click(); 'cancelled'" | Out-Null
+  $cancelled = Evaluate $ws $idHolder "JSON.parse(localStorage.getItem('lutonglokal.reservations.v1'))[0].status"
+  if ($approvedInDashboard -eq "Approved" -and $cancelled -eq "Cancelled") { Pass "Customer sees the approval and can cancel the booking" }
+  else { Fail "Dashboard status was '$approvedInDashboard'; saved status after cancel was '$cancelled'" }
+  $cancelledTableAvailable = Evaluate $ws $idHolder "LutongReservations.isTableAvailable('window','WIN-01','$reservationDate','13:00')"
+  if ($cancelledTableAvailable -eq $true) { Pass "Customer cancellation releases the table" }
+  else { Fail "The cancelled reservation still blocks its table" }
+
+  Evaluate $ws $idHolder @"
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'demo', displayName: 'Demo Customer', email: 'demo@lutonglokal.test',
+  role: 'user', loginAt: new Date().toISOString(), isNew: false
+}));
+LutongReservations.create({
+  customerName: 'Demo Customer', guestCount: 2, reservationDate: '$reservationDate',
+  reservationTime: '13:00', areaId: 'window', tableId: 'WIN-02'
+});
+"@ | Out-Null
+  Evaluate $ws $idHolder @'
+localStorage.setItem('lutonglokal.session.v1', JSON.stringify({
+  username: 'admin', displayName: 'Demo Administrator', email: 'admin@lutonglokal.test',
+  role: 'admin', loginAt: new Date().toISOString(), isNew: false
+}));
+'@ | Out-Null
+  Open-Page "admin.html"
+  Evaluate $ws $idHolder "document.querySelector('[data-reservation-action=Rejected]').click(); 'rejected'" | Out-Null
+  $rejectedAndAvailable = Evaluate $ws $idHolder "JSON.stringify({status:JSON.parse(localStorage.getItem('lutonglokal.reservations.v1')).filter(function(r){return r.tableId==='WIN-02';})[0].status,available:LutongReservations.isTableAvailable('window','WIN-02','$reservationDate','13:00')})"
+  $rejectedResult = $rejectedAndAvailable | ConvertFrom-Json
+  if ($rejectedResult.status -eq "Rejected" -and $rejectedResult.available -eq $true) { Pass "Rejecting a pending reservation releases its table" }
+  else { Fail "Rejected reservation status/availability was incorrect" }
+  Open-Page "reservations.html"
+  $persistedId = Evaluate $ws $idHolder "JSON.parse(localStorage.getItem('lutonglokal.reservations.v1')).filter(function(r){return r.id==='$reservationId';})[0].id"
+  if ($persistedId -eq $reservationId) { Pass "Reservation data persists after page refresh/navigation" }
+  else { Fail "Saved reservation was missing after navigation" }
 }
 finally {
   if ($ws -ne $null) { try { $ws.Dispose() } catch { } }

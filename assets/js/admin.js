@@ -19,6 +19,11 @@
   var menuTable = null;
   var ordersTable = null;
   var messagesBox = null;
+  var reservationsBox = null;
+  var reservationInventoryBox = null;
+  var renderReservationInventory = null;
+  var renderReservations = null;
+  var handleReservationAction = null;
   var statusBox = null;
   var warningBox = null;
   var form = null;
@@ -269,6 +274,168 @@
     if (!messagesBox) {
       return;
     }
+
+    /* ------------------------------------------------------------------
+       Seat reservations and configured table inventory
+       ------------------------------------------------------------------ */
+    function renderReservationInventoryLocal() {
+      if (!reservationInventoryBox) {
+        return;
+      }
+      reservationInventoryBox.innerHTML = "";
+      var areas = LutongReservations.config.areas;
+      for (var i = 0; i < areas.length; i += 1) {
+        var group = document.createElement("section");
+        group.className = "reservation-inventory-area";
+        var heading = document.createElement("h3");
+        heading.textContent = areas[i].name;
+        var list = document.createElement("ul");
+        for (var j = 0; j < areas[i].tables.length; j += 1) {
+          var table = areas[i].tables[j];
+          var item = document.createElement("li");
+          item.textContent = "Table " + table.number + " · " + table.id +
+            " · up to " + table.capacity + (table.capacity === 1 ? " guest" : " guests");
+          list.appendChild(item);
+        }
+        group.appendChild(heading);
+        group.appendChild(list);
+        reservationInventoryBox.appendChild(group);
+      }
+    }
+
+    function buildReservationCard(reservation) {
+      var card = document.createElement("article");
+      card.className = "card reservation-admin-card";
+      card.setAttribute("data-reservation-row", reservation.id);
+      var body = document.createElement("div");
+      body.className = "card-body";
+
+      var header = document.createElement("div");
+      header.className = "order-card-head";
+      var id = document.createElement("strong");
+      id.className = "mono";
+      id.textContent = reservation.id;
+      var status = document.createElement("span");
+      status.className = LutongReservations.statusClass(reservation.status);
+      status.textContent = reservation.status;
+      header.appendChild(id);
+      header.appendChild(status);
+
+      var customer = document.createElement("h3");
+      customer.className = "card-title";
+      customer.textContent = reservation.customerName;
+      var details = document.createElement("p");
+      details.className = "reservation-admin-details";
+      details.textContent = "Table " + reservation.tableNumber + " · " +
+        reservation.guestCount + (reservation.guestCount === 1 ? " guest" : " guests") +
+        " · " + reservation.reservationDate + " at " + reservation.reservationTime;
+      var tableId = document.createElement("p");
+      tableId.className = "text-muted reservation-admin-table-id";
+      tableId.textContent = "Table ID: " + reservation.tableId +
+        " · Capacity: " + reservation.capacity;
+      var requests = document.createElement("p");
+      requests.className = "text-muted reservation-admin-requests";
+      requests.textContent = reservation.specialRequests
+        ? "Special requests: " + reservation.specialRequests
+        : "No special requests";
+
+      body.appendChild(header);
+      body.appendChild(customer);
+      body.appendChild(details);
+      body.appendChild(tableId);
+      body.appendChild(requests);
+
+      if (reservation.status === "Pending") {
+        var actions = document.createElement("div");
+        actions.className = "button-row";
+        actions.style.marginBottom = "0";
+        var approve = document.createElement("button");
+        approve.type = "button";
+        approve.className = "btn btn-primary btn-sm";
+        approve.setAttribute("data-reservation-action", "Approved");
+        approve.setAttribute("data-reservation-id", reservation.id);
+        approve.textContent = "Approve";
+        var reject = document.createElement("button");
+        reject.type = "button";
+        reject.className = "btn btn-danger btn-sm";
+        reject.setAttribute("data-reservation-action", "Rejected");
+        reject.setAttribute("data-reservation-id", reservation.id);
+        reject.textContent = "Reject";
+        actions.appendChild(approve);
+        actions.appendChild(reject);
+        body.appendChild(actions);
+      }
+
+      card.appendChild(body);
+      return card;
+    }
+
+    function renderReservationsLocal() {
+      if (!reservationsBox) {
+        return;
+      }
+      var reservations = LutongReservations.getAll();
+      reservationsBox.innerHTML = "";
+      var count = byId("admin-reservation-count");
+      if (count) {
+        count.textContent = String(reservations.length);
+      }
+      if (reservations.length === 0) {
+        var empty = document.createElement("div");
+        empty.className = "empty-state admin-order-empty";
+        var message = document.createElement("p");
+        message.className = "text-muted";
+        message.textContent = "No reservations yet. Customer booking requests will appear here.";
+        empty.appendChild(message);
+        reservationsBox.appendChild(empty);
+        return;
+      }
+
+      var areas = LutongReservations.config.areas;
+      for (var a = 0; a < areas.length; a += 1) {
+        var matches = [];
+        for (var i = 0; i < reservations.length; i += 1) {
+          if (reservations[i].areaId === areas[a].id) {
+            matches.push(reservations[i]);
+          }
+        }
+        if (matches.length === 0) {
+          continue;
+        }
+        var group = document.createElement("section");
+        group.className = "reservation-admin-area";
+        var heading = document.createElement("h3");
+        heading.textContent = areas[a].name;
+        var list = document.createElement("div");
+        list.className = "reservation-admin-cards";
+        for (var j = 0; j < matches.length; j += 1) {
+          list.appendChild(buildReservationCard(matches[j]));
+        }
+        group.appendChild(heading);
+        group.appendChild(list);
+        reservationsBox.appendChild(group);
+      }
+    }
+
+    function handleReservationActionLocal(event) {
+      var button = event.target.closest("[data-reservation-action]");
+      if (!button) {
+        return;
+      }
+      var reservationId = button.getAttribute("data-reservation-id");
+      var status = button.getAttribute("data-reservation-action");
+      if (!LutongReservations.setAdminStatus(reservationId, status)) {
+        LutongUI.setStatus(statusBox, "That reservation could not be updated. It may no longer be pending.", "error");
+        renderReservationsLocal();
+        return;
+      }
+      renderReservationsLocal();
+      LutongUI.setStatus(statusBox, "Reservation " + reservationId + " is now " + status + ".", "success");
+    }
+
+    renderReservationInventory = renderReservationInventoryLocal;
+    renderReservations = renderReservationsLocal;
+    handleReservationAction = handleReservationActionLocal;
 
     var messages = lutongGetMessages();
     messagesBox.innerHTML = "";
@@ -721,6 +888,8 @@
     menuTable = byId("admin-menu-table");
     ordersTable = byId("admin-orders-table");
     messagesBox = byId("admin-messages");
+    reservationsBox = byId("admin-reservations");
+    reservationInventoryBox = byId("admin-reservation-inventory");
     statusBox = byId("admin-status");
     warningBox = byId("admin-warning");
     form = byId("menu-form");
@@ -751,6 +920,16 @@
     renderMenu();
     renderOrders();
     renderMessages();
+    renderReservationInventory();
+    renderReservations();
+    if (reservationsBox) {
+      reservationsBox.addEventListener("click", handleReservationAction);
+    }
+    window.addEventListener("storage", function (event) {
+      if (event.key === "lutonglokal.reservations.v1") {
+        renderReservations();
+      }
+    });
 
     if (form) {
       form.addEventListener("submit", handleMenuSubmit);

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reservations — THE UNKNOWN COFFEE</title>
+  <meta name="description" content="Choose your seating area and reserve a table at THE UNKNOWN COFFEE.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/img/favicon.svg" alt="" width="40" height="40">
+        <span class="brand-text">
+          <strong>THE UNKNOWN COFFEE</strong>
+          <small>Find Your Coffee, Made Easy.</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-label visually-hidden">Open main menu</span>
+      </button>
+
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="reservations.html" aria-current="page">Reservations</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="cart.html" class="nav-cart">
+              Cart <span class="cart-badge" data-cart-count>0</span>
+            </a>
+          </li>
+          <li data-register-nav><a href="register.html">Register</a></li>
+          <li data-account-nav><a href="login.html" class="nav-account" data-account-link>Sign in</a></li>
+          <li data-sign-out-nav hidden><button class="btn btn-ghost btn-sm" type="button" data-sign-out>Sign out</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li aria-current="page">Reservations</li>
+          </ol>
+        </nav>
+        <h1>Reserve your seat</h1>
+        <p>Choose your favorite spot, then pick a time. Ordering coffee is optional.</p>
+      </div>
+    </section>
+
+    <section class="section section-tight reservation-section">
+      <div class="container reservation-shell">
+        <div id="reservation-status" class="alert" role="status" aria-live="polite" hidden></div>
+
+        <section id="reservation-confirmation" class="reservation-confirmation" aria-labelledby="reservation-confirmation-title" hidden>
+          <div class="reservation-confirmation-mark" aria-hidden="true">✓</div>
+          <div>
+            <p class="reservation-eyebrow">Booking request received</p>
+            <h2 id="reservation-confirmation-title">Your table is reserved pending review</h2>
+            <p class="text-muted">Keep your reservation ID handy. You can follow its status from your dashboard.</p>
+            <dl class="reservation-confirmation-details">
+              <div><dt>Reservation ID</dt><dd class="mono" id="reservation-confirmation-id"></dd></div>
+              <div><dt>Name</dt><dd id="reservation-confirmation-name"></dd></div>
+              <div><dt>Table</dt><dd id="reservation-confirmation-area"></dd></div>
+              <div><dt>Date &amp; time</dt><dd id="reservation-confirmation-schedule"></dd></div>
+              <div><dt>Guests</dt><dd id="reservation-confirmation-guests"></dd></div>
+              <div><dt>Status</dt><dd id="reservation-confirmation-status"></dd></div>
+            </dl>
+            <div class="button-row">
+              <a class="btn btn-primary" href="dashboard.html">View my reservations</a>
+              <a class="btn btn-outline" href="menu.html">Browse the coffee menu</a>
+            </div>
+          </div>
+        </section>
+
+        <form id="reservation-form" class="reservation-layout" novalidate>
+          <div class="reservation-main">
+            <section class="reservation-step" aria-labelledby="reservation-area-title">
+              <div class="reservation-step-heading">
+                <span class="reservation-step-number" aria-hidden="true">1</span>
+                <div>
+                  <h2 id="reservation-area-title">Choose a seating area</h2>
+                  <p class="text-muted">Pick the atmosphere that feels right.</p>
+                </div>
+              </div>
+              <div class="reservation-area-grid" id="reservation-area-grid" aria-label="Seating areas"></div>
+              <p class="field-error" id="reservation-area-error" hidden></p>
+            </section>
+
+            <section class="reservation-step" aria-labelledby="reservation-details-title">
+              <div class="reservation-step-heading">
+                <span class="reservation-step-number" aria-hidden="true">2</span>
+                <div>
+                  <h2 id="reservation-details-title">Set your visit details</h2>
+                  <p class="text-muted">Availability updates for your selected date and time.</p>
+                </div>
+              </div>
+              <div class="form-grid form-grid-2 reservation-fields">
+                <div class="field">
+                  <label for="reservation-date">Reservation date <span class="required" aria-hidden="true">*</span></label>
+                  <input type="date" id="reservation-date" name="date" required>
+                </div>
+                <div class="field">
+                  <label for="reservation-time">Reservation time <span class="required" aria-hidden="true">*</span></label>
+                  <input type="time" id="reservation-time" name="time" step="900" required>
+                </div>
+              </div>
+            </section>
+
+            <section class="reservation-step" aria-labelledby="reservation-tables-heading" tabindex="-1">
+              <div class="reservation-step-heading">
+                <span class="reservation-step-number" aria-hidden="true">3</span>
+                <div>
+                  <h2 id="reservation-tables-heading">Select a table</h2>
+                  <p class="text-muted" id="reservation-table-help">Choose a seating area to see its tables.</p>
+                </div>
+              </div>
+              <div class="reservation-table-legend" aria-label="Table status legend">
+                <span><i class="legend-dot legend-available" aria-hidden="true"></i>Available</span>
+                <span><i class="legend-dot legend-selected" aria-hidden="true"></i>Selected</span>
+                <span><i class="legend-dot legend-reserved" aria-hidden="true"></i>Reserved</span>
+              </div>
+              <div class="reservation-table-grid" id="reservation-table-grid" aria-label="Tables in the selected seating area"></div>
+              <p class="field-error" id="reservation-tables-error" hidden></p>
+            </section>
+          </div>
+
+          <aside class="reservation-booking-panel" aria-labelledby="reservation-booking-title">
+            <div class="reservation-booking-heading">
+              <span class="reservation-step-number" aria-hidden="true">4</span>
+              <div>
+                <h2 id="reservation-booking-title">Your reservation</h2>
+                <p class="text-muted">A few details and you’re all set.</p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="reservation-name">Full name <span class="required" aria-hidden="true">*</span></label>
+              <input type="text" id="reservation-name" name="name" autocomplete="name" maxlength="80" required>
+              <p class="field-error" id="reservation-name-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="reservation-guests">Number of guests <span class="required" aria-hidden="true">*</span></label>
+              <input type="number" id="reservation-guests" name="guests" min="1" max="20" value="2" step="1" required>
+              <p class="field-error" id="reservation-guests-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="reservation-requests">Special requests <span class="text-muted">(optional)</span></label>
+              <textarea id="reservation-requests" name="requests" rows="3" maxlength="400" placeholder="Anything we should know?"></textarea>
+            </div>
+            <p class="reservation-booking-note">Reservations start as <strong>Pending</strong> until confirmed by the team. No coffee order is required.</p>
+            <button class="btn btn-primary btn-block" type="submit">Request reservation</button>
+            <a class="reservation-menu-link" href="menu.html">Want coffee too? Explore the menu <span aria-hidden="true">→</span></a>
+          </aside>
+        </form>
+
+        <p class="reservation-storage-note">This demo saves bookings in this browser only. It does not provide online or cross-device synchronization.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h2>THE UNKNOWN COFFEE</h2>
+        <p>Find Your Coffee, Made Easy.</p>
+        <p>Fresh drinks and quick ordering for customers in Davao City.</p>
+      </div>
+      <div>
+        <h3>Pages</h3>
+        <ul class="footer-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
+          <li><a href="cart.html">Cart &amp; Checkout</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Account</h3>
+        <ul class="footer-list">
+          <li><a href="login.html">Sign in</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Staff</h3>
+        <ul class="footer-list">
+          <li><a href="admin.html">Admin area</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>THE UNKNOWN COFFEE • Davao City, Philippines</p>
+      <p>&copy; <span data-current-year>2026</span> THE UNKNOWN COFFEE</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/reservations.js"></script>
+</body>
+</html>

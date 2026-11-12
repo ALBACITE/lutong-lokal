@@ -30,6 +30,7 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -78,6 +79,8 @@
           </div>
           <h3 class="dashboard-guest-title">Guest orders on this device</h3>
           <div id="dashboard-guest-orders" class="dashboard-orders"></div>
+          <h3 class="dashboard-guest-title">Guest reservations on this device</h3>
+          <div id="dashboard-guest-reservations" class="dashboard-reservations"></div>
         </div>
 
         <!-- Shown when a demo session exists. -->
@@ -128,6 +131,16 @@
                 </div>
             </section>
           </div>
+          <section class="dashboard-panel dashboard-reservations-panel" aria-labelledby="dashboard-reservations-title">
+            <div class="dashboard-panel-heading">
+              <div>
+                <h2 id="dashboard-reservations-title">My Reservations</h2>
+                <p class="text-muted">Your table requests and their latest status.</p>
+              </div>
+              <a class="btn btn-outline btn-sm" href="reservations.html">Book a table</a>
+            </div>
+            <div id="dashboard-reservations" class="dashboard-reservations"></div>
+          </section>
         </div>
       </div>
     </section>
@@ -181,6 +194,7 @@
   <script src="assets/js/validate.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/orders.js"></script>
+  <script src="assets/js/reservations.js"></script>
   <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

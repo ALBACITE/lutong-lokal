@@ -85,7 +85,7 @@ try {
     Send-Cdp "Emulation.setDeviceMetricsOverride" @{ width=$width; height=900; deviceScaleFactor=1; mobile=($width -lt 700) } | Out-Null
   }
 
-  $pages = @("index.html","menu.html","cart.html","about.html","contact.html","login.html","register.html","dashboard.html","admin.html")
+  $pages = @("index.html","menu.html","cart.html","about.html","contact.html","login.html","register.html","dashboard.html","admin.html","reservations.html")
 
   Write-Host "`n=== 1. Every page loads with no console errors ===" -ForegroundColor Cyan
   Set-Width 1440
@@ -96,15 +96,16 @@ try {
     $current = Eval @'
 document.querySelectorAll('.primary-nav a[aria-current="page"]').length
 '@
-    if ($errors.Count -eq 0 -and $navLinks -eq 6 -and $current -eq 1) {
-      Pass "$page loads cleanly with 6 nav links and 1 current-page marker"
+    $currentExpected = if ($page -eq "dashboard.html" -or $page -eq "admin.html") { 0 } else { 1 }
+    if ($errors.Count -eq 0 -and $navLinks -eq 8 -and $current -eq $currentExpected) {
+      Pass "$page loads cleanly with 8 nav links and $currentExpected current-page marker(s)"
     } else {
-      Fail "${page}: errors=$($errors.Count) navLinks=$navLinks current=$current"
+        Fail "${page}: errors=$($errors.Count) navLinks=$navLinks current=$current"
     }
   }
 
   Write-Host "`n=== 2. The pages changed in this stage fit a phone screen ===" -ForegroundColor Cyan
-  foreach ($page in @("menu.html","cart.html")) {
+  foreach ($page in @("menu.html","cart.html","reservations.html")) {
     foreach ($width in @(390, 1440)) {
       Set-Width $width
       Open-Page $page

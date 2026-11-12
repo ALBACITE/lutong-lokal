@@ -42,6 +42,7 @@
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="menu.html">Coffee Menu</a></li>
+          <li><a href="reservations.html">Reservations</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li>
@@ -149,6 +150,18 @@
               <span class="badge badge-category" id="order-count">0</span>
               order(s) on this device.
             </p>
+          </section>
+
+          <section class="admin-panel" aria-labelledby="admin-reservations-title">
+            <div class="reservation-admin-heading">
+              <div>
+                <h2 id="admin-reservations-title">Reservations</h2>
+                <p class="text-muted">Review requests and keep each seating area's table availability up to date.</p>
+              </div>
+              <span class="badge badge-category"><span id="admin-reservation-count">0</span> total</span>
+            </div>
+            <div id="admin-reservation-inventory" class="reservation-inventory" aria-label="Table inventory by seating area"></div>
+            <div id="admin-reservations" class="reservation-admin-list"></div>
           </section>
 
           <section class="admin-panel" aria-labelledby="admin-menu-title">
@@ -321,6 +334,7 @@
   <script src="assets/js/validate.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/orders.js"></script>
+  <script src="assets/js/reservations.js"></script>
   <script src="assets/js/admin.js"></script>
 </body>
 </html>

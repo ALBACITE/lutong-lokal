@@ -10,7 +10,7 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $pages = @(
   "index.html", "menu.html", "cart.html", "about.html", "contact.html",
-  "login.html", "register.html", "dashboard.html", "admin.html"
+  "login.html", "register.html", "dashboard.html", "admin.html", "reservations.html"
 )
 
 $failures = New-Object System.Collections.ArrayList
@@ -87,7 +87,7 @@ foreach ($page in $pages) {
   foreach ($target in $pages) {
     if ($text -notlike "*href=`"$target`"*") { $missing += $target }
   }
-  if ($missing.Count -eq 0) { Pass "$page links to all 9 pages" }
+  if ($missing.Count -eq 0) { Pass "$page links to all 10 pages" }
   else { Fail "$page does not link to: $($missing -join ', ')" }
 }
 
